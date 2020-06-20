@@ -5,10 +5,18 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+/// The `symbol` argument is used to symbol of NumberFormat.
+/// Put '\$' for symbol
+///
+/// The `locale` argument is used to locale of NumberFormat.
+/// Put 'en' or 'es' for locale
+///
+/// The `decimalDigits` argument is used to decimalDigits of NumberFormat.
+/// Defaults `decimalDigits` is 2.
 class CurrencyTextInputFormatter extends TextInputFormatter {
   CurrencyTextInputFormatter({
-    this.symbol = '\$ ',
-    this.locale = 'en',
+    this.symbol,
+    this.locale,
     this.decimalDigits = 2,
   });
 
@@ -21,7 +29,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     final format = NumberFormat.currency(locale: locale, decimalDigits: decimalDigits, symbol: symbol);
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
-    if (newText.trim() == '') {
+    if (newText.trim() == '' || newText.trim() == '0') {
       return newValue.copyWith(text: '');
     } else if (int.parse(newText) < 1) {
       return newValue.copyWith(text: '');
