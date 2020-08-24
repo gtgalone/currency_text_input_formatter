@@ -9,3 +9,7 @@
 # 0.1.2
 
   * Add 0 price.
+
+# 0.1.3
+
+  * Change default symbol to ''.

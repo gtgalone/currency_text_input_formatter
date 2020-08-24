@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 /// Defaults `decimalDigits` is 2.
 class CurrencyTextInputFormatter extends TextInputFormatter {
   CurrencyTextInputFormatter({
-    this.symbol,
+    this.symbol = '',
     this.locale,
     this.decimalDigits = 2,
   });
@@ -32,7 +32,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
     if (newText.trim() == '') {
       return newValue.copyWith(text: '');
-    } else if ((oldValue.text == '\$ 0.00') && (int.parse(newText) == 0)) {
+    } else if ((oldValue.text == '${symbol}0.00') &&
+        (int.parse(newText) == 0)) {
       return newValue.copyWith(text: '');
     }
 
