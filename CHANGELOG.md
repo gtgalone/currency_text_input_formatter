@@ -13,3 +13,7 @@
 # 0.1.3
 
   * Change default symbol to ''.
+
+# 0.1.4
+
+  * Fix offset to last.
