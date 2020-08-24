@@ -5,3 +5,7 @@
 # 0.1.1
 
   * Add exception for first digits 0.
+
+# 0.1.2
+
+  * Add 0 price.

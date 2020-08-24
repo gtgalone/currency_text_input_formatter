@@ -10,7 +10,7 @@ https://pub.dev/packages/currency_text_input_formatter
 ### Add pubspec.yaml
 ``` yaml
 dependencies:
-  currency_text_input_formatter: <lastest_version>
+  currency_text_input_formatter: ^0.1.2
 ```
 ---
 ## Usage

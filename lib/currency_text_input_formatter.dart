@@ -25,25 +25,28 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   final int decimalDigits;
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final format = NumberFormat.currency(locale: locale, decimalDigits: decimalDigits, symbol: symbol);
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final format = NumberFormat.currency(
+        locale: locale, decimalDigits: decimalDigits, symbol: symbol);
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
-
-    if (newText.trim() == '' || newText.trim() == '0') {
+    if (newText.trim() == '') {
       return newValue.copyWith(text: '');
-    } else if (int.parse(newText) < 1) {
+    } else if ((oldValue.text == '\$ 0.00') && (int.parse(newText) == 0)) {
       return newValue.copyWith(text: '');
     }
 
     dynamic newInt = int.parse(newText);
-    var selectionIndexFromTheRight = newValue.text.length - newValue.selection.end;
+    var selectionIndexFromTheRight =
+        newValue.text.length - newValue.selection.end;
     if (decimalDigits > 0) {
       newInt /= pow(10, decimalDigits);
     }
     String newString = format.format(newInt);
     return TextEditingValue(
       text: newString,
-      selection: TextSelection.collapsed(offset: newString.length - selectionIndexFromTheRight),
+      selection: TextSelection.collapsed(
+          offset: newString.length - selectionIndexFromTheRight),
     );
   }
 }
