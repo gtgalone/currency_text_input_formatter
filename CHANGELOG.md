@@ -17,3 +17,7 @@
 # 0.1.4
 
   * Fix offset to last.
+
+# 0.2.0
+
+  * Add negative #3. Huge Thanks! @holtalanm

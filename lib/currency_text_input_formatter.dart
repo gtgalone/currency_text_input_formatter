@@ -36,7 +36,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
           text: isNegative ? '-' : '',
           selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     } else if (newText == '0') {
-      return newValue.copyWith(
+      newValue.copyWith(
           text: isNegative ? '-' : '',
           selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     } else if (newText == '00') {
