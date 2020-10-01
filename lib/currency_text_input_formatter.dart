@@ -29,21 +29,27 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     final format = NumberFormat.currency(
         locale: locale, decimalDigits: decimalDigits, symbol: symbol);
+    bool isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
     if (newText.trim() == '') {
-      newValue.copyWith(text: '');
+      return newValue.copyWith(
+          text: isNegative ? '-' : '',
+          selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     } else if (newText == '0') {
-      newValue.copyWith(text: '');
+      return newValue.copyWith(
+          text: isNegative ? '-' : '',
+          selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     } else if (newText == '00') {
       return TextEditingValue(
-          text: '', selection: TextSelection.collapsed(offset: 0));
+          text: isNegative ? '-' : '',
+          selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     }
 
     dynamic newInt = int.parse(newText);
     if (decimalDigits > 0) {
       newInt /= pow(10, decimalDigits);
     }
-    String newString = format.format(newInt);
+    String newString = (isNegative ? '-' : '') + format.format(newInt);
     return TextEditingValue(
       text: newString,
       selection: TextSelection.collapsed(offset: newString.length),
