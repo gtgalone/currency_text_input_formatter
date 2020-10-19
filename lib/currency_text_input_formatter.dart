@@ -31,6 +31,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
         locale: locale, decimalDigits: decimalDigits, symbol: symbol);
     bool isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
+
     if (newText.trim() == '') {
       return newValue.copyWith(
           text: isNegative ? '-' : '',
@@ -39,10 +40,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       newValue.copyWith(
           text: isNegative ? '-' : '',
           selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
-    } else if (newText == '00') {
+    } else if (newText == '00' || newText == '000') {
       return TextEditingValue(
           text: isNegative ? '-' : '',
           selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
+    }
+
+    String oldText = oldValue.text.replaceAll(RegExp('[^0-9]'), '');
+    if (newText == oldText) {
+      newText = newText.substring(0, newText.length - 1);
     }
 
     dynamic newInt = int.parse(newText);

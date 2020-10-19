@@ -21,3 +21,7 @@
 # 0.2.0
 
   * Add negative #3. Huge Thanks! @holtalanm
+
+# 0.3.0
+
+  * Fix for surfix symbol currency deletion #6 #7. Huge Thanks! @drbizeps
