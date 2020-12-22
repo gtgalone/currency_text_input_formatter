@@ -30,6 +30,6 @@
 
   * Change version for readme installation
 
-# 1.0.0
+# 1.0.1
 
   * Fix returns an extra space with '' symbol #9. and Add test code. Huge Thanks! @luistrivelatto

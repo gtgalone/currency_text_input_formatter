@@ -16,7 +16,7 @@ import 'package:intl/intl.dart';
 class CurrencyTextInputFormatter extends TextInputFormatter {
   CurrencyTextInputFormatter({
     this.symbol = '',
-    this.locale = '',
+    this.locale,
     this.decimalDigits = 2,
   });
 
