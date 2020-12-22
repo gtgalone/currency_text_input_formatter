@@ -55,7 +55,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     if (decimalDigits > 0) {
       newInt /= pow(10, decimalDigits);
     }
-    String newString = (isNegative ? '-' : '') + format.format(newInt);
+    String newString = (isNegative ? '-' : '') + format.format(newInt).trim();
     return TextEditingValue(
       text: newString,
       selection: TextSelection.collapsed(offset: newString.length),
