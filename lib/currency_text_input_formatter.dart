@@ -46,8 +46,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
           selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
     }
 
-    String oldText = oldValue.text.replaceAll(RegExp('[^0-9]'), '');
-    if (newText == oldText) {
+    String newTextWithoutSymbol =
+        newValue.text.replaceAll(RegExp('[^0-9.,]'), '');
+    String oldTextWithoutSymbol =
+        oldValue.text.replaceAll(RegExp('[^0-9.,]'), '');
+    if (newTextWithoutSymbol == oldTextWithoutSymbol) {
       newText = newText.substring(0, newText.length - 1);
     }
 

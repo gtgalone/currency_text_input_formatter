@@ -28,8 +28,12 @@
 
 # 0.3.1
 
-  * Change version for readme installation
+  * Change version for readme installation.
 
 # 1.0.1
 
   * Fix returns an extra space with '' symbol #9. and Add test code. Huge Thanks! @luistrivelatto
+
+# 1.0.2
+
+  * Change to ignore symbol only #11.
