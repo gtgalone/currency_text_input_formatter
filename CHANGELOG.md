@@ -37,3 +37,7 @@
 # 1.0.2
 
   * Change to ignore symbol only #11.
+
+# 1.0.3
+
+  * Refactor codes. Huge Thanks! @luistrivelatto

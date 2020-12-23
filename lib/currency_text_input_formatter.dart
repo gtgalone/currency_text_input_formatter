@@ -33,7 +33,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     bool isRemovedCharacter =
         oldValue.text.length - 1 == newValue.text.length &&
             oldValue.text.startsWith(newValue.text);
-
     // Apparently, Flutter has a bug where the framework calls
     // formatEditUpdate twice, or even four times, after a backspace press (see
     // https://github.com/gtgalone/currency_text_input_formatter/issues/11).
@@ -57,7 +56,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     // formatted text is not a digit (for example, "1,00 €"), we need to remove
     // the digit manually.
     if (isRemovedCharacter && !_lastCharacterIsDigit(oldValue.text)) {
-      newText = newText.substring(0, newText.length - 1);
+      int length = newText.length - 1;
+      newText = newText.substring(0, length > 0 ? length : 0);
     }
 
     if (newText.trim() == '') {
