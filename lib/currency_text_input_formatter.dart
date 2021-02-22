@@ -18,11 +18,13 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.symbol = '',
     this.locale,
     this.decimalDigits = 2,
+    this.turnOffGrouping = false,
   });
 
   final String symbol;
   final String locale;
   final int decimalDigits;
+  final bool turnOffGrouping;
 
   @override
   TextEditingValue formatEditUpdate(
@@ -49,6 +51,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     final format = NumberFormat.currency(
         locale: locale, decimalDigits: decimalDigits, symbol: symbol);
+    if (turnOffGrouping) {
+      format.turnOffGrouping();
+    }
     bool isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
