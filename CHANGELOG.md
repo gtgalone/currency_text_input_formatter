@@ -41,3 +41,7 @@
 # 1.0.3
 
   * Refactor codes. Huge Thanks! @luistrivelatto
+
+# 1.0.4
+
+  * Add option grouping turn off. Huge Thanks! @yuriescl
