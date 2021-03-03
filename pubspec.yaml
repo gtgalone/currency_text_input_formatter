@@ -1,6 +1,6 @@
 name: currency_text_input_formatter
 description: Currency Text Input Formatter for Flutter. Use it easy and simple for your flutter app.
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/gtgalone/currency_text_input_formatter
 
 environment:
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  intl: ^0.16.1
+  intl: ^0.17.0
 
 
 dev_dependencies:

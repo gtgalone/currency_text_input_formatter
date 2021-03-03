@@ -45,3 +45,7 @@
 # 1.0.4
 
   * Add option grouping turn off. Huge Thanks! @yuriescl
+
+# 1.0.5
+
+  * Update intl package to 0.17.0.
