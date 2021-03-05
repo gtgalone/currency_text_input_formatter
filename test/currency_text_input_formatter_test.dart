@@ -4,68 +4,69 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 
 void main() {
   test('Formats input without symbol by default', () {
-    var formatter = CurrencyTextInputFormatter();
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(symbol: '');
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
     expect(value.text, '0.00');
   });
 
   test('Formats input with correct number of digits', () {
-    var formatter = CurrencyTextInputFormatter(decimalDigits: 3);
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(decimalDigits: 3);
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
-    expect(value.text, '0.000');
+    expect(value.text, 'USD0.000');
   });
 
   test('Formats input correctly without decimal digits', () {
-    var formatter = CurrencyTextInputFormatter(symbol: '@', decimalDigits: 0);
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(symbol: '@', decimalDigits: 0);
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
     expect(value.text, '@0');
   });
 
   test('Formats input with symbol, if symbol is provided', () {
-    var formatter = CurrencyTextInputFormatter(symbol: '@');
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(symbol: '@');
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
     expect(value.text, '@0.00');
   });
 
   test('Formats input with locale, if locale is provided', () {
     // The 'es' locale differs in that it uses comma instead of a dot as separator.
-    var formatter = CurrencyTextInputFormatter(locale: 'es');
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(locale: 'es');
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
-    expect(value.text, '0,00');
+    final nbsp = String.fromCharCode(0xa0);
+    expect(value.text, '0,00${nbsp}EUR');
   });
 
   test('Formats input with symbol and locale, if both are provided', () {
-    var formatter = CurrencyTextInputFormatter(symbol: r'@$', locale: 'es');
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(symbol: r'@$', locale: 'es');
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
-    var nbsp = String.fromCharCode(0xa0);
+    final nbsp = String.fromCharCode(0xa0);
     expect(value.text, '0,00' + nbsp + r'@$');
   });
 
   test(
       'Formats input with ISO code and locale, if locale is provided and symbol is null',
       () {
-    var formatter = CurrencyTextInputFormatter(symbol: null, locale: 'es');
-    var value = formatter.formatEditUpdate(
+    final formatter = CurrencyTextInputFormatter(locale: 'es');
+    final value = formatter.formatEditUpdate(
         TextEditingValue.empty, TextEditingValue(text: '0'));
-    var nbsp = String.fromCharCode(0xa0);
+    final nbsp = String.fromCharCode(0xa0);
     expect(value.text, '0,00' + nbsp + 'EUR');
   });
 
   test('Formats longer string correctly', () {
-    var formatter = CurrencyTextInputFormatter();
-    var value = formatter.formatEditUpdate(TextEditingValue(text: '1,234.56'),
+    final formatter = CurrencyTextInputFormatter();
+    final value = formatter.formatEditUpdate(TextEditingValue(text: '1,234.56'),
         TextEditingValue(text: '1,234.567'));
-    expect(value.text, '12,345.67');
+    expect(value.text, 'USD12,345.67');
   });
 
   group('Erasing last digit works', () {
-    CurrencyTextInputFormatter formatter;
+    CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
     String eraseLast(String text) => formatter
         .formatEditUpdate(
           TextEditingValue(text: text),
@@ -76,12 +77,12 @@ void main() {
     test('With the default parameters', () {
       formatter = CurrencyTextInputFormatter();
 
-      expect(eraseLast('12,345.67'), '1,234.56');
-      expect(eraseLast('1,234.56'), '123.45');
-      expect(eraseLast('123.45'), '12.34');
-      expect(eraseLast('12.34'), '1.23');
-      expect(eraseLast('1.23'), '0.12');
-      expect(eraseLast('0.12'), '0.01');
+      expect(eraseLast('12,345.67'), 'USD1,234.56');
+      expect(eraseLast('1,234.56'), 'USD123.45');
+      expect(eraseLast('123.45'), 'USD12.34');
+      expect(eraseLast('12.34'), 'USD1.23');
+      expect(eraseLast('1.23'), 'USD0.12');
+      expect(eraseLast('0.12'), 'USD0.01');
       expect(eraseLast('0.01'), '');
     });
 
@@ -108,7 +109,7 @@ void main() {
     // the formatter works despite this problem. For discussion, see
     // https://github.com/gtgalone/currency_text_input_formatter/issues/11.
 
-    CurrencyTextInputFormatter formatter;
+    CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
     String formatEditUpdate(String oldText, String newText) => formatter
         .formatEditUpdate(
           TextEditingValue(text: oldText),
@@ -133,10 +134,11 @@ void main() {
     test('With the default parameters', () {
       formatter = CurrencyTextInputFormatter();
 
-      expect(eraseWithBugFormatterCalledTwice('0.12'), '0.01');
-      expect(eraseWithBugFormatterCalledTwice('123,456.78'), '12,345.67');
-      expect(eraseWithBugFormatterCalledFourTimes('0.12'), '0.01');
-      expect(eraseWithBugFormatterCalledFourTimes('123,456.78'), '12,345.67');
+      expect(eraseWithBugFormatterCalledTwice('0.12'), 'USD0.01');
+      expect(eraseWithBugFormatterCalledTwice('123,456.78'), 'USD12,345.67');
+      expect(eraseWithBugFormatterCalledFourTimes('0.12'), 'USD0.01');
+      expect(
+          eraseWithBugFormatterCalledFourTimes('123,456.78'), 'USD12,345.67');
     });
 
     test('With a suffix symbol', () {

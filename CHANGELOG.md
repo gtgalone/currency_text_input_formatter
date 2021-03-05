@@ -20,11 +20,11 @@
 
 # 0.2.0
 
-  * Add negative #3. Huge Thanks! @holtalanm
+  * Add negative.(#3) Huge Thanks! @holtalanm
 
 # 0.3.0
 
-  * Fix for surfix symbol currency deletion #6 #7. Huge Thanks! @drbizeps
+  * Fix for surfix symbol currency deletion.(#6)(#7) Huge Thanks! @drbizeps
 
 # 0.3.1
 
@@ -32,11 +32,11 @@
 
 # 1.0.1
 
-  * Fix returns an extra space with '' symbol #9. and Add test code. Huge Thanks! @luistrivelatto
+  * Fix returns an extra space with '' symbol.(#9) and Add test code. Huge Thanks! @luistrivelatto
 
 # 1.0.2
 
-  * Change to ignore symbol only #11.
+  * Change to ignore symbol only.(#11)
 
 # 1.0.3
 
@@ -48,4 +48,8 @@
 
 # 1.0.5
 
-  * Update intl package to 0.17.0.
+  * Update intl package to 0.17.0.(#15)
+
+# 2.0.0
+
+  * Apply null safety. and Make default symbol is null. Add more parameters for NumberFormat currency.

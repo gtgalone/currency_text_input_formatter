@@ -5,25 +5,52 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-/// The `symbol` argument is used to symbol of NumberFormat.
+/// The `symbol` argument is used to symbol of NumberFormat currency.
+/// Defaults `symbol` is null.
 /// Put '\$' for symbol
 ///
-/// The `locale` argument is used to locale of NumberFormat.
+/// The `locale` argument is used to locale of NumberFormat currency.
+/// Defaults `locale` is null.
 /// Put 'en' or 'es' for locale
 ///
-/// The `decimalDigits` argument is used to decimalDigits of NumberFormat.
+/// The `name` argument is used to locale of NumberFormat currency.
+/// Defaults `name` is null.
+/// the currency with that ISO 4217 name will be used.
+/// Otherwise we will use the default currency name for the current locale.
+/// If no [symbol] is specified, we will use the currency name in the formatted result.
+/// e.g. var f = NumberFormat.currency(locale: 'en_US', name: 'EUR') will format currency like "EUR1.23".
+/// If we did not specify the name, it would format like "USD1.23".
+///
+/// The `decimalDigits` argument is used to decimalDigits of NumberFormat currency.
 /// Defaults `decimalDigits` is 2.
+///
+/// The `customPattern` argument is used to locale of NumberFormat currency.
+/// Defaults `name` is null.
+/// Can be used to specify a particular format.
+/// This is useful if you have your own locale data which includes unsupported formats
+/// (e.g. accounting format for currencies.)
+///
+/// The `turnOffGrouping` argument is used to locale of NumberFormat currency.
+/// Defaults `turnOffGrouping` is false.
+/// Explicitly turn off any grouping (e.g. by thousands) in this format.
+/// This is used in compact number formatting, where we omit the normal grouping.
+/// Best to know what you're doing if you call it.
+///
 class CurrencyTextInputFormatter extends TextInputFormatter {
   CurrencyTextInputFormatter({
-    this.symbol = '',
     this.locale,
+    this.name,
+    this.symbol,
     this.decimalDigits = 2,
+    this.customPattern,
     this.turnOffGrouping = false,
   });
 
-  final String symbol;
-  final String locale;
+  final String? locale;
+  final String? name;
+  final String? symbol;
   final int decimalDigits;
+  final String? customPattern;
   final bool turnOffGrouping;
 
   @override
@@ -50,7 +77,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final format = NumberFormat.currency(
-        locale: locale, decimalDigits: decimalDigits, symbol: symbol);
+      locale: locale,
+      name: name,
+      symbol: symbol,
+      decimalDigits: decimalDigits,
+      customPattern: customPattern,
+    );
     if (turnOffGrouping) {
       format.turnOffGrouping();
     }
@@ -67,15 +99,17 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     if (newText.trim() == '') {
       return newValue.copyWith(
-          text: isNegative ? '-' : '',
-          selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
+        text: isNegative ? '-' : '',
+        selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
+      );
     } else if (newText == '00' || newText == '000') {
       return TextEditingValue(
-          text: isNegative ? '-' : '',
-          selection: TextSelection.collapsed(offset: isNegative ? 1 : 0));
+        text: isNegative ? '-' : '',
+        selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
+      );
     }
 
-    dynamic newInt = int.parse(newText);
+    num newInt = int.parse(newText);
     if (decimalDigits > 0) {
       newInt /= pow(10, decimalDigits);
     }
