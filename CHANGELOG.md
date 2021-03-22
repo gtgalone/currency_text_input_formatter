@@ -53,3 +53,7 @@
 # 2.0.0
 
   * Apply null safety. and Make default symbol is null. Add more parameters for NumberFormat currency.
+
+# 2.0.1
+
+  * Remove decimalDigits's default value for locale.
