@@ -10,7 +10,7 @@ https://pub.dev/packages/currency_text_input_formatter
 ### Add pubspec.yaml
 ``` yaml
 dependencies:
-  currency_text_input_formatter: ^2.0.1
+  currency_text_input_formatter: ^2.1.0
 ```
 ### Solving Intl package conflict
 Add this code end of pubspec.yaml.
@@ -24,9 +24,8 @@ dependency_overrides:
 
 ### Basic
 ``` dart
-import 'package:flutter/material.dart';
-
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,11 +50,41 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-### Custom Options
+### With initialValue
 ``` dart
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: TextFormField(
+            initialValue: _formatter.format('2000'),
+            inputFormatters: <TextInputFormatter>[_formatter],
+            keyboardType: TextInputType.number,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Custom Options
+``` dart
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -66,15 +95,17 @@ class MyApp extends StatelessWidget {
       title: 'Welcome to Flutter',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Welcome to Flutter'),
+          title: const Text('Welcome to Flutter'),
         ),
         body: Center(
           child: TextField(
-            inputFormatters: [CurrencyTextInputFormatter(
-              locale: 'ko',
-              decimalDigits: 0,
-              symbol: 'KRW(원) ', // or to remove symbol set ''.
-            )],
+            inputFormatters: <TextInputFormatter>[
+              CurrencyTextInputFormatter(
+                locale: 'ko',
+                decimalDigits: 0,
+                symbol: 'KRW(원) ',
+              ),
+            ],
             keyboardType: TextInputType.number,
           ),
         ),

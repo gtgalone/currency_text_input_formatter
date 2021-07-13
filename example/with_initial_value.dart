@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,8 +16,9 @@ class MyApp extends StatelessWidget {
           title: const Text('Welcome to Flutter'),
         ),
         body: Center(
-          child: TextField(
-            inputFormatters: <TextInputFormatter>[CurrencyTextInputFormatter()],
+          child: TextFormField(
+            initialValue: _formatter.format('2000'),
+            inputFormatters: <TextInputFormatter>[_formatter],
             keyboardType: TextInputType.number,
           ),
         ),

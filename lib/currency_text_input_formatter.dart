@@ -5,38 +5,24 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-/// The `symbol` argument is used to symbol of NumberFormat currency.
-/// Defaults `symbol` is null.
-/// Put '\$' for symbol
+/// Flutter plugin for currency text input formatter.
 ///
-/// The `locale` argument is used to locale of NumberFormat currency.
-/// Defaults `locale` is null.
-/// Put 'en' or 'es' for locale
-///
-/// The `name` argument is used to locale of NumberFormat currency.
-/// Defaults `name` is null.
-/// the currency with that ISO 4217 name will be used.
-/// Otherwise we will use the default currency name for the current locale.
-/// If no [symbol] is specified, we will use the currency name in the formatted result.
-/// e.g. var f = NumberFormat.currency(locale: 'en_US', name: 'EUR') will format currency like "EUR1.23".
-/// If we did not specify the name, it would format like "USD1.23".
-///
-/// The `decimalDigits` argument is used to decimalDigits of NumberFormat currency.
-/// Defaults `decimalDigits` is null.
-///
-/// The `customPattern` argument is used to locale of NumberFormat currency.
-/// Defaults `name` is null.
-/// Can be used to specify a particular format.
-/// This is useful if you have your own locale data which includes unsupported formats
-/// (e.g. accounting format for currencies.)
-///
-/// The `turnOffGrouping` argument is used to locale of NumberFormat currency.
-/// Defaults `turnOffGrouping` is false.
-/// Explicitly turn off any grouping (e.g. by thousands) in this format.
-/// This is used in compact number formatting, where we omit the normal grouping.
-/// Best to know what you're doing if you call it.
-///
+/// See [the official documentation](https://github.com/gtgalone/currency_text_input_formatter)
+/// for more information on how to use TextInputFormatter.
 class CurrencyTextInputFormatter extends TextInputFormatter {
+  /// Builds an CurrencyTextInputFormatter with the following parameters.
+  ///
+  /// [locale] argument is used to locale of NumberFormat currency.
+  ///
+  /// [name] argument is used to locale of NumberFormat currency.
+  ///
+  /// [symbol] argument is used to symbol of NumberFormat currency.
+  ///
+  /// [decimalDigits] argument is used to decimalDigits of NumberFormat currency.
+  ///
+  /// [customPattern] argument is used to locale of NumberFormat currency.
+  ///
+  /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
   CurrencyTextInputFormatter({
     this.locale,
     this.name,
@@ -46,16 +32,69 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.turnOffGrouping = false,
   });
 
+  /// Defaults `locale` is null.
+  ///
+  /// Put 'en' or 'es' for locale
   final String? locale;
+
+  /// Defaults `name` is null.
+  ///
+  /// the currency with that ISO 4217 name will be used.
+  /// Otherwise we will use the default currency name for the current locale.
+  /// If no [symbol] is specified, we will use the currency name in the formatted result.
+  /// e.g. var f = NumberFormat.currency(locale: 'en_US', name: 'EUR') will format currency like "EUR1.23".
+  /// If we did not specify the name, it would format like "USD1.23".
   final String? name;
+
+  /// Defaults `symbol` is null.
+  ///
+  /// Put '\$' for symbol
   final String? symbol;
+
+  /// Defaults `decimalDigits` is null.
   final int? decimalDigits;
+
+  /// Defaults `customPattern` is null.
+  ///
+  /// Can be used to specify a particular format.
+  /// This is useful if you have your own locale data which includes unsupported formats
+  /// (e.g. accounting format for currencies.)
   final String? customPattern;
+
+  /// Defaults `turnOffGrouping` is false.
+  ///
+  /// Explicitly turn off any grouping (e.g. by thousands) in this format.
+  /// This is used in compact number formatting, where we omit the normal grouping.
+  /// Best to know what you're doing if you call it.
   final bool turnOffGrouping;
+
+  num _newNum = 0;
+  String _newString = '';
+
+  void _formatter(String newText, bool isNegative) {
+    final NumberFormat format = NumberFormat.currency(
+      locale: locale,
+      name: name,
+      symbol: symbol,
+      decimalDigits: decimalDigits,
+      customPattern: customPattern,
+    );
+    if (turnOffGrouping) {
+      format.turnOffGrouping();
+    }
+
+    _newNum = num.parse(newText);
+    if (format.decimalDigits! > 0) {
+      _newNum /= pow(10, format.decimalDigits!);
+    }
+    _newString = (isNegative ? '-' : '') + format.format(_newNum).trim();
+  }
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     final bool isInsertedCharacter =
         oldValue.text.length + 1 == newValue.text.length &&
             newValue.text.startsWith(oldValue.text);
@@ -76,16 +115,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       return oldValue;
     }
 
-    final NumberFormat format = NumberFormat.currency(
-      locale: locale,
-      name: name,
-      symbol: symbol,
-      decimalDigits: decimalDigits,
-      customPattern: customPattern,
-    );
-    if (turnOffGrouping) {
-      format.turnOffGrouping();
-    }
     final bool isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
@@ -96,6 +125,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       final int length = newText.length - 1;
       newText = newText.substring(0, length > 0 ? length : 0);
     }
+
+    _formatter(newText, isNegative);
 
     if (newText.trim() == '') {
       return newValue.copyWith(
@@ -109,20 +140,33 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       );
     }
 
-    num newInt = int.parse(newText);
-    if (format.decimalDigits! > 0) {
-      newInt /= pow(10, format.decimalDigits!);
-    }
-    final String newString =
-        (isNegative ? '-' : '') + format.format(newInt).trim();
     return TextEditingValue(
-      text: newString,
-      selection: TextSelection.collapsed(offset: newString.length),
+      text: _newString,
+      selection: TextSelection.collapsed(offset: _newString.length),
     );
   }
 
   static bool _lastCharacterIsDigit(String text) {
     final String lastChar = text.substring(text.length - 1);
     return RegExp('[0-9]').hasMatch(lastChar);
+  }
+
+  /// Get String type value with format such as `$ 2,000.00`
+  String getFormattedValue() {
+    return _newString;
+  }
+
+  /// Get num type value without format such as `2000.00`
+  num getUnformattedValue() {
+    return _newNum;
+  }
+
+  /// Method for formatting value.
+  /// You can use initialValue with this method.
+  String format(String value) {
+    final bool isNegative = value.startsWith('-');
+    final String newText = value.replaceAll(RegExp('[^0-9]'), '');
+    _formatter(newText, isNegative);
+    return _newString;
   }
 }

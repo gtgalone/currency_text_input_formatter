@@ -57,3 +57,9 @@
 # 2.0.1
 
   * Remove decimalDigits's default value for locale.
+
+# 2.1.0
+
+  * Add `format` method for initialValue (#20). Huge Thanks! @khsater, @FilipKvestak
+  * Add `getFormattedValue` method.
+  * Add `getUnformattedValue` method.

@@ -7,14 +7,14 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  currency_text_input_formatter:
   flutter:
     sdk: flutter
-  currency_text_input_formatter:
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_driver:
+    sdk: flutter
+  flutter_test:
     sdk: flutter
   test: ^1.15.7
 
