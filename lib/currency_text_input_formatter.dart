@@ -83,7 +83,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       format.turnOffGrouping();
     }
 
-    _newNum = num.parse(newText);
+    _newNum = num.tryParse(newText) ?? 0;
     if (format.decimalDigits! > 0) {
       _newNum /= pow(10, format.decimalDigits!);
     }
@@ -133,7 +133,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
         text: isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
       );
-    } else if (newText == '00' || newText == '000') {
+    } else if (!newText.split('').map((String e) => e == '0').contains(false)) {
       return TextEditingValue(
         text: isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
