@@ -133,7 +133,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
         text: isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
       );
-    } else if (!newText.split('').map((String e) => e == '0').contains(false)) {
+    } else if (newText == '00' || newText == '000') {
       return TextEditingValue(
         text: isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),

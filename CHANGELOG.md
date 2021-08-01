@@ -63,3 +63,7 @@
   * Add `format` method for initialValue (#20). Huge Thanks! @khsater, @FilipKvestak
   * Add `getFormattedValue` method.
   * Add `getUnformattedValue` method.
+
+# 2.1.1
+
+  * Merge pull request handle num parsing error (#23). Huge Thanks! @al-fin
