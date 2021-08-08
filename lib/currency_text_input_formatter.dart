@@ -95,9 +95,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    final bool isInsertedCharacter =
-        oldValue.text.length + 1 == newValue.text.length &&
-            newValue.text.startsWith(oldValue.text);
+    // final bool isInsertedCharacter =
+    //     oldValue.text.length + 1 == newValue.text.length &&
+    //         newValue.text.startsWith(oldValue.text);
     final bool isRemovedCharacter =
         oldValue.text.length - 1 == newValue.text.length &&
             oldValue.text.startsWith(newValue.text);
@@ -111,9 +111,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     // fixes a problem where a character wasn't properly erased after a
     // backspace press, when this Flutter bug was present. This comes at the
     // cost of losing insertion/removal in the middle and pasting text.
-    if (!isInsertedCharacter && !isRemovedCharacter) {
-      return oldValue;
-    }
+    // if (!isInsertedCharacter && !isRemovedCharacter) {
+    //   return oldValue;
+    // }
 
     final bool isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');

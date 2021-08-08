@@ -67,3 +67,7 @@
 # 2.1.1
 
   * Merge pull request handle num parsing error (#23). Huge Thanks! @al-fin
+
+# 2.1.2
+
+  * Fix text selection bug (#24). Huge Thanks! @Pomb
