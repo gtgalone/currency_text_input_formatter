@@ -71,3 +71,7 @@
 # 2.1.2
 
   * Fix text selection bug (#24). Huge Thanks! @Pomb
+
+# 2.1.3
+
+  * Add an example of built-in methods in readme.

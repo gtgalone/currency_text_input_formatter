@@ -10,7 +10,7 @@ https://pub.dev/packages/currency_text_input_formatter
 ### Add pubspec.yaml
 ``` yaml
 dependencies:
-  currency_text_input_formatter: ^2.1.2
+  currency_text_input_formatter: ^2.1.3
 ```
 ### Solving Intl package conflict
 Add this code end of pubspec.yaml.
@@ -105,6 +105,43 @@ class MyApp extends StatelessWidget {
                 decimalDigits: 0,
                 symbol: 'KRW(원) ',
               ),
+            ],
+            keyboardType: TextInputType.number,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+### With built-in methods
+``` dart
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
+
+  @override
+  Widget build(BuildContext context) {
+    // Built-in Methods
+    print(formatter.getFormattedValue()); // $ 2,000
+    print(formatter.getUnformattedValue()); // 2000.00
+    print(formatter.format('2000')); // $ 2,000
+
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: TextField(
+            inputFormatters: <TextInputFormatter>[
+              formatter,
             ],
             keyboardType: TextInputType.number,
           ),
