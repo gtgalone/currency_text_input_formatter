@@ -70,8 +70,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   num _newNum = 0;
   String _newString = '';
+  bool _isNegative = false;
 
-  void _formatter(String newText, bool isNegative) {
+  void _formatter(String newText) {
     final NumberFormat format = NumberFormat.currency(
       locale: locale,
       name: name,
@@ -87,7 +88,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     if (format.decimalDigits! > 0) {
       _newNum /= pow(10, format.decimalDigits!);
     }
-    _newString = (isNegative ? '-' : '') + format.format(_newNum).trim();
+    _newString = (_isNegative ? '-' : '') + format.format(_newNum).trim();
   }
 
   @override
@@ -115,7 +116,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     //   return oldValue;
     // }
 
-    final bool isNegative = newValue.text.startsWith('-');
+    _isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
     // If the user wants to remove a digit, but the last character of the
@@ -126,17 +127,17 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       newText = newText.substring(0, length > 0 ? length : 0);
     }
 
-    _formatter(newText, isNegative);
+    _formatter(newText);
 
     if (newText.trim() == '') {
       return newValue.copyWith(
-        text: isNegative ? '-' : '',
-        selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
+        text: _isNegative ? '-' : '',
+        selection: TextSelection.collapsed(offset: _isNegative ? 1 : 0),
       );
     } else if (newText == '00' || newText == '000') {
       return TextEditingValue(
-        text: isNegative ? '-' : '',
-        selection: TextSelection.collapsed(offset: isNegative ? 1 : 0),
+        text: _isNegative ? '-' : '',
+        selection: TextSelection.collapsed(offset: _isNegative ? 1 : 0),
       );
     }
 
@@ -158,15 +159,14 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   /// Get num type value without format such as `2000.00`
   num getUnformattedValue() {
-    return _newNum;
+    return _isNegative ? (_newNum * -1) : _newNum;
   }
 
   /// Method for formatting value.
   /// You can use initialValue with this method.
   String format(String value) {
-    final bool isNegative = value.startsWith('-');
     final String newText = value.replaceAll(RegExp('[^0-9]'), '');
-    _formatter(newText, isNegative);
+    _formatter(newText);
     return _newString;
   }
 }

@@ -75,3 +75,7 @@
 # 2.1.3
 
   * Add an example of built-in methods in readme.
+
+# 2.1.4
+
+  * Fix for negative value of `getUnformattedValue` method (#26). Huge Thanks! @kgabol
