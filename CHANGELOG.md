@@ -79,3 +79,7 @@
 # 2.1.4
 
   * Fix for negative value of `getUnformattedValue` method (#26). Huge Thanks! @kgabol
+
+# 2.1.5
+
+  * Fix for negative value of `format` method. Huge Thanks! @jahoefne

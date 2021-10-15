@@ -165,6 +165,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// Method for formatting value.
   /// You can use initialValue with this method.
   String format(String value) {
+    _isNegative = value.startsWith('-');
     final String newText = value.replaceAll(RegExp('[^0-9]'), '');
     _formatter(newText);
     return _newString;
