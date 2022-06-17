@@ -83,3 +83,7 @@
 # 2.1.5
 
   * Fix for negative value of `format` method. Huge Thanks! @jahoefne
+
+# 2.1.6
+
+  * Add code to prevent changes in the middle of value.
