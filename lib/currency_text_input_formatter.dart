@@ -71,7 +71,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   num _newNum = 0;
   String _newString = '';
   bool _isNegative = false;
-  int _currentOffset = 0;
 
   void _formatter(String newText) {
     final NumberFormat format = NumberFormat.currency(
@@ -120,14 +119,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     _isNegative = newValue.text.startsWith('-');
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
-    // If users try to insert value in the middle of value,
-    // It will not be able and the cursor moves to the end of value.
-    if (oldValue.selection.baseOffset != _currentOffset) {
-      return oldValue.copyWith(
-        selection: TextSelection.collapsed(offset: _currentOffset),
-      );
-    }
-
     // If the user wants to remove a digit, but the last character of the
     // formatted text is not a digit (for example, "1,00 €"), we need to remove
     // the digit manually.
@@ -139,18 +130,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     _formatter(newText);
 
     if (newText.trim() == '' || newText == '00' || newText == '000') {
-      _currentOffset = _isNegative ? 1 : 0;
       return TextEditingValue(
         text: _isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: _isNegative ? 1 : 0),
       );
     }
 
-    _currentOffset = _newString.length;
-
     return TextEditingValue(
       text: _newString,
-      selection: TextSelection.collapsed(offset: _currentOffset),
+      selection: TextSelection.collapsed(offset: _newString.length),
     );
   }
 

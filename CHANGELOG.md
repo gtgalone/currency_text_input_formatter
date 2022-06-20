@@ -87,3 +87,7 @@
 # 2.1.6
 
   * Add code to prevent changes in the middle of value.
+
+# 2.1.7
+
+  * Remove prevent changes in the middle of value.(#34) Huge Thanks! @yoseptara
