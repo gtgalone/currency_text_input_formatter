@@ -58,8 +58,6 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,13 +67,29 @@ class MyApp extends StatelessWidget {
           title: const Text('Welcome to Flutter'),
         ),
         body: Center(
-          child: TextFormField(
-            initialValue: _formatter.format('2000'),
-            inputFormatters: <TextInputFormatter>[_formatter],
-            keyboardType: TextInputType.number,
-          ),
+          child: MyFormField(),
         ),
       ),
+    );
+  }
+}
+
+class MyFormField extends StatefulWidget {
+  const MyFormField({ super.key });
+
+  @override
+  State<YellowBird> createState() => _MyFormFieldState();
+}
+
+class _MyFormFieldState extends State<MyFormField> {
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      initialValue: _formatter.format('2000'),
+      inputFormatters: <TextInputFormatter>[_formatter],
+      keyboardType: TextInputType.number,
     );
   }
 }
@@ -123,7 +137,32 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: MyFormField(),
+        ),
+      ),
+    );
+  }
+}
+
+class MyFormField extends StatefulWidget {
+  const MyFormField({ super.key });
+
+  @override
+  State<YellowBird> createState() => _MyFormFieldState();
+}
+
+class _MyFormFieldState extends State<MyFormField> {
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
 
   @override
   Widget build(BuildContext context) {
@@ -132,21 +171,9 @@ class MyApp extends StatelessWidget {
     print(formatter.getUnformattedValue()); // 2000.00
     print(formatter.format('2000')); // $ 2,000
 
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: TextField(
-            inputFormatters: <TextInputFormatter>[
-              formatter,
-            ],
-            keyboardType: TextInputType.number,
-          ),
-        ),
-      ),
+    return TextFormField(
+      inputFormatters: <TextInputFormatter>[_formatter],
+      keyboardType: TextInputType.number,
     );
   }
 }
