@@ -73,6 +73,14 @@ void main() {
     expect(value.text, 'USD12,345.67');
   });
 
+  test('Formats input correctly with negative numbers disabled', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter(enableNegative: false);
+    final TextEditingValue value = formatter.formatEditUpdate(
+        TextEditingValue.empty, const TextEditingValue(text: '-100'));
+    expect(value.text, 'USD1.00');
+  });
+
   group('Erasing last digit works', () {
     CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
     String eraseLast(String text) => formatter
