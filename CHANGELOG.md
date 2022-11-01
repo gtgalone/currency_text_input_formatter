@@ -91,3 +91,7 @@
 # 2.1.7
 
   * Remove prevent changes in the middle of value.(#34) Huge Thanks! @yoseptara
+
+# 2.1.8
+
+  * Add optional negative parameter.(#40) Huge Thanks! @chrallard
