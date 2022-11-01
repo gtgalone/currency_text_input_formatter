@@ -30,6 +30,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.decimalDigits,
     this.customPattern,
     this.turnOffGrouping = false,
+    this.enableNegative = true,
   });
 
   /// Defaults `locale` is null.
@@ -67,6 +68,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// This is used in compact number formatting, where we omit the normal grouping.
   /// Best to know what you're doing if you call it.
   final bool turnOffGrouping;
+
+  /// Defaults `enableNegative` is true.
+  /// 
+  /// Set to false if you want to disable negative numbers.
+  final bool enableNegative;
 
   num _newNum = 0;
   String _newString = '';
@@ -116,7 +122,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     //   return oldValue;
     // }
 
-    _isNegative = newValue.text.startsWith('-');
+    if (enableNegative) {
+      _isNegative = newValue.text.startsWith('-');
+    } else {
+      _isNegative = false;
+    }
+
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
     // If the user wants to remove a digit, but the last character of the
@@ -160,7 +171,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// Method for formatting value.
   /// You can use initialValue with this method.
   String format(String value) {
-    _isNegative = value.startsWith('-');
+    if (enableNegative) {
+      _isNegative = value.startsWith('-');
+    } else {
+      _isNegative = false;
+    }
+
     final String newText = value.replaceAll(RegExp('[^0-9]'), '');
     _formatter(newText);
     return _newString;
