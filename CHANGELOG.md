@@ -95,3 +95,7 @@
 # 2.1.8
 
   * Add optional negative parameter.(#40) Huge Thanks! @chrallard
+
+# 2.1.9
+
+  * Update intl package to 0.18.0.(#44) Huge Thanks! @robertoltrocha
