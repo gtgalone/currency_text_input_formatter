@@ -70,7 +70,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   final bool turnOffGrouping;
 
   /// Defaults `enableNegative` is true.
-  /// 
+  ///
   /// Set to false if you want to disable negative numbers.
   final bool enableNegative;
 
@@ -182,7 +182,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     return _newString;
   }
 
-  // Method for formatting value.
+  /// Method for formatting value.
+  /// You can use initialValue(double) with this method.
   String formatDouble(double value) {
     if (enableNegative) {
       _isNegative = value.isNegative;
@@ -190,7 +191,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       _isNegative = false;
     }
 
-    final String newText = value.toStringAsFixed(decimalDigits ?? 0).replaceAll(RegExp('[^0-9]'), '');
+    final String newText = value
+        .toStringAsFixed(decimalDigits ?? 0)
+        .replaceAll(RegExp('[^0-9]'), '');
     _formatter(newText);
     return _newString;
   }
