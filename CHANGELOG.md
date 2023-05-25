@@ -99,3 +99,7 @@
 # 2.1.9
 
   * Update intl package to 0.18.0.(#44) Huge Thanks! @robertoltrocha
+
+# 2.1.10
+
+  * Supporting format for double values.(#47) Huge Thanks! @lmanerich

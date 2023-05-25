@@ -10,7 +10,7 @@ https://pub.dev/packages/currency_text_input_formatter
 ### Add pubspec.yaml
 ``` yaml
 dependencies:
-  currency_text_input_formatter: ^2.1.9
+  currency_text_input_formatter: ^2.1.10
 ```
 ### Solving Intl package conflict
 Add this code end of pubspec.yaml.
@@ -170,6 +170,7 @@ class _MyFormFieldState extends State<MyFormField> {
     print(formatter.getFormattedValue()); // $ 2,000
     print(formatter.getUnformattedValue()); // 2000.00
     print(formatter.format('2000')); // $ 2,000
+    print(formatter.formatDouble('20.00')); // $ 20
 
     return TextFormField(
       inputFormatters: <TextInputFormatter>[_formatter],
