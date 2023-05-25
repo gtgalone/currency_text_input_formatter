@@ -181,4 +181,17 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     _formatter(newText);
     return _newString;
   }
+
+  // Method for formatting value.
+  String formatDouble(double value) {
+    if (enableNegative) {
+      _isNegative = value.isNegative;
+    } else {
+      _isNegative = false;
+    }
+
+    final String newText = value.toStringAsFixed(decimalDigits ?? 0).replaceAll(RegExp('[^0-9]'), '');
+    _formatter(newText);
+    return _newString;
+  }
 }
