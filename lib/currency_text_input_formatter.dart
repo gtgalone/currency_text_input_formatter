@@ -23,6 +23,10 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [customPattern] argument is used to locale of NumberFormat currency.
   ///
   /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
+  ///
+  /// [enableNegative] argument is used to enable negative value.
+  ///
+  /// [inputDirection] argument is used to set input direction.
   CurrencyTextInputFormatter({
     this.locale,
     this.name,
@@ -31,7 +35,19 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.customPattern,
     this.turnOffGrouping = false,
     this.enableNegative = true,
-  });
+    this.inputDirection = InputDirection.right,
+  }) {
+    _format = NumberFormat.currency(
+      locale: locale,
+      name: name,
+      symbol: symbol,
+      decimalDigits: decimalDigits,
+      customPattern: customPattern,
+    );
+    if (turnOffGrouping) {
+      _format.turnOffGrouping();
+    }
+  }
 
   /// Defaults `locale` is null.
   ///
@@ -74,27 +90,24 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// Set to false if you want to disable negative numbers.
   final bool enableNegative;
 
+  /// Defaults `inputDirection` is InputDirection.right.
+  ///
+  /// Set to InputDirection.left if you want to type from left.
+  /// InputDirection.left cannot support formatting for now. You need to format
+  /// your self.
+  final InputDirection inputDirection;
+
+  late NumberFormat _format;
   num _newNum = 0;
   String _newString = '';
   bool _isNegative = false;
 
   void _formatter(String newText) {
-    final NumberFormat format = NumberFormat.currency(
-      locale: locale,
-      name: name,
-      symbol: symbol,
-      decimalDigits: decimalDigits,
-      customPattern: customPattern,
-    );
-    if (turnOffGrouping) {
-      format.turnOffGrouping();
-    }
-
     _newNum = num.tryParse(newText) ?? 0;
-    if (format.decimalDigits! > 0) {
-      _newNum /= pow(10, format.decimalDigits!);
+    if (_format.decimalDigits! > 0) {
+      _newNum /= pow(10, _format.decimalDigits!);
     }
-    _newString = (_isNegative ? '-' : '') + format.format(_newNum).trim();
+    _newString = (_isNegative ? '-' : '') + _format.format(_newNum).trim();
   }
 
   @override
@@ -102,12 +115,31 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
+    final bool isLeft = inputDirection == InputDirection.left;
+    if (isLeft) {
+      final List<String> nums = newValue.text.split('.');
+      if (nums.length > 2) {
+        return oldValue;
+      }
+      if (nums.length == 2 && (nums[1].length > (_format.decimalDigits ?? 2))) {
+        return oldValue;
+      }
+      final double? v = double.tryParse(newValue.text);
+      if (v == null) {
+        return oldValue;
+      }
+      _newNum = v;
+      _newString = newValue.text;
+      return newValue;
+    }
+
     // final bool isInsertedCharacter =
     //     oldValue.text.length + 1 == newValue.text.length &&
     //         newValue.text.startsWith(oldValue.text);
     final bool isRemovedCharacter =
         oldValue.text.length - 1 == newValue.text.length &&
             oldValue.text.startsWith(newValue.text);
+
     // Apparently, Flutter has a bug where the framework calls
     // formatEditUpdate twice, or even four times, after a backspace press (see
     // https://github.com/gtgalone/currency_text_input_formatter/issues/11).
@@ -197,4 +229,13 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     _formatter(newText);
     return _newString;
   }
+}
+
+/// Enum for input direction.
+enum InputDirection {
+  /// Left input direction
+  left,
+
+  /// Right input direction
+  right,
 }
