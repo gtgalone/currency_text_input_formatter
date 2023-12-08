@@ -103,3 +103,7 @@
 # 2.1.10
 
   * Supporting format for double values.(#47) Huge Thanks! @lmanerich
+
+# 2.1.11
+
+  * Add inputDirection parameter. It cannot support formatting stuff for now.

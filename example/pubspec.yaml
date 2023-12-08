@@ -4,7 +4,7 @@ homepage: https://github.com/gtgalone/currency_text_input_formatter
 publish_to: "none"
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=3.2.0 <4.0.0'
 
 dependencies:
   currency_text_input_formatter:
