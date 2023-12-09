@@ -27,6 +27,10 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [enableNegative] argument is used to enable negative value.
   ///
   /// [inputDirection] argument is used to set input direction.
+  ///
+  /// [minValue] argument is used to set min value.
+  ///
+  /// [maxValue] argument is used to set max value.
   CurrencyTextInputFormatter({
     this.locale,
     this.name,
@@ -36,6 +40,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.turnOffGrouping = false,
     this.enableNegative = true,
     this.inputDirection = InputDirection.right,
+    this.minValue,
+    this.maxValue,
   }) {
     _format = NumberFormat.currency(
       locale: locale,
@@ -97,6 +103,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// your self.
   final InputDirection inputDirection;
 
+  /// Defaults `minValue` is null.
+  final num? minValue;
+
+  /// Defaults `maxValue` is null.
+  final num? maxValue;
+
   late NumberFormat _format;
   num _newNum = 0;
   String _newString = '';
@@ -108,6 +120,20 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       _newNum /= pow(10, _format.decimalDigits!);
     }
     _newString = (_isNegative ? '-' : '') + _format.format(_newNum).trim();
+  }
+
+  bool _isLessThanMinValue() {
+    if (minValue == null) {
+      return false;
+    }
+    return _newNum < minValue!;
+  }
+
+  bool _isMoreThanMaxValue() {
+    if (maxValue == null) {
+      return false;
+    }
+    return _newNum > maxValue!;
   }
 
   @override
@@ -130,6 +156,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       }
       _newNum = v;
       _newString = newValue.text;
+      if (_isLessThanMinValue() || _isMoreThanMaxValue()) {
+        return oldValue;
+      }
       return newValue;
     }
 
@@ -171,6 +200,10 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     _formatter(newText);
+
+    if (_isLessThanMinValue() || _isMoreThanMaxValue()) {
+      return oldValue;
+    }
 
     if (newText.trim() == '' || newText == '00' || newText == '000') {
       return TextEditingValue(
