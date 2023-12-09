@@ -107,3 +107,7 @@
 # 2.1.11
 
   * Add inputDirection parameter. It cannot support formatting stuff for now.
+
+# 2.1.12
+
+  * Update intl version to 0.19.0.(#50) Huge Thanks! @NeKoFu
