@@ -31,6 +31,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [minValue] argument is used to set min value.
   ///
   /// [maxValue] argument is used to set max value.
+  ///
+  /// [onChange] argument is used to set callback when value is changed.
   CurrencyTextInputFormatter({
     this.locale,
     this.name,
@@ -42,6 +44,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.inputDirection = InputDirection.right,
     this.minValue,
     this.maxValue,
+    this.onChange,
   }) {
     _format = NumberFormat.currency(
       locale: locale,
@@ -108,6 +111,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   /// Defaults `maxValue` is null.
   final num? maxValue;
+
+  /// Callback when value is changed.
+  /// You can use this to listen to value changes.
+  /// e.g. onChange: (value) => print(value);
+  final Function(String)? onChange;
 
   late NumberFormat _format;
   num _newNum = 0;
@@ -210,6 +218,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
         text: _isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: _isNegative ? 1 : 0),
       );
+    }
+
+    /// Call onChange callback
+    if (onChange != null) {
+      onChange!(_newString);
     }
 
     return TextEditingValue(
