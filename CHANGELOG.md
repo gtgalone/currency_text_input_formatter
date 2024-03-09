@@ -115,3 +115,7 @@
 # 2.1.13
 
   * Add minValue and maxValue parameters.(#48) Huge Thanks! @ayzerobug
+
+# 2.1.14
+
+  * Add onChange parameters.(#51) Huge Thanks! @laripeanuts
