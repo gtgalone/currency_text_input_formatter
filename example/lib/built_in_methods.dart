@@ -7,7 +7,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final CurrencyTextInputFormatter formatter =
-      CurrencyTextInputFormatter(NumberFormat());
+      CurrencyTextInputFormatter(NumberFormat.currency());
 
   @override
   Widget build(BuildContext context) {
