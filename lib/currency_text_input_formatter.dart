@@ -34,6 +34,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.maxValue,
     this.onChange,
   }) {
+    assert(numberFormat.decimalDigits != null,
+        'Please initialize NumberFormat with currency. Eg. NumberFormat.currency() or NumberFormat.simpleCurrency()');
     if (turnOffGrouping) {
       numberFormat.turnOffGrouping();
     }

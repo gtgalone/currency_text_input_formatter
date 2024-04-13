@@ -8,10 +8,8 @@ void main() => runApp(MaterialApp(home: MyApp()));
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final format = NumberFormat.simpleCurrency(locale: "en-Gb");
+    final format = NumberFormat.simpleCurrency(locale: "ja-JP");
     final formatter = CurrencyTextInputFormatter(format);
-
-    String initialValue = formatter.formatDouble(123.25);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              initialValue: initialValue,
+              initialValue: formatter.formatDouble(123.25),
               inputFormatters: <TextInputFormatter>[
                 formatter,
               ],

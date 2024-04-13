@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 void main() {
   test('Formats input without symbol by default', () {
     final CurrencyTextInputFormatter formatter =
-        CurrencyTextInputFormatter(NumberFormat.currency());
+        CurrencyTextInputFormatter(NumberFormat.currency(symbol: ''));
     final TextEditingValue value = formatter.formatEditUpdate(
         TextEditingValue.empty, const TextEditingValue(text: '0'));
     expect(value.text, '0.00');
@@ -83,6 +83,14 @@ void main() {
     final TextEditingValue value = formatter.formatEditUpdate(
         TextEditingValue.empty, const TextEditingValue(text: '-100'));
     expect(value.text, 'USD1.00');
+  });
+
+  test('Format a double input and gets it back', () {
+    final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter(
+        NumberFormat.currency(),
+        enableNegative: false);
+    formatter.formatDouble(123.25);
+    expect(formatter.getDouble(), 123.25);
   });
 
   group('Erasing last digit works', () {
