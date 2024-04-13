@@ -1,11 +1,13 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+  final CurrencyTextInputFormatter _formatter =
+      CurrencyTextInputFormatter(NumberFormat());
 
   @override
   Widget build(BuildContext context) {

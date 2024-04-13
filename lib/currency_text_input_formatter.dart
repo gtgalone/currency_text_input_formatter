@@ -1,4 +1,4 @@
-library currency_text_input_formatter;
+library currency_text_inputnumberFormatter;
 
 import 'dart:math';
 
@@ -7,20 +7,12 @@ import 'package:intl/intl.dart';
 
 /// Flutter plugin for currency text input formatter.
 ///
-/// See [the official documentation](https://github.com/gtgalone/currency_text_input_formatter)
+/// See [the official documentation](https://github.com/gtgalone/currency_text_inputnumberFormatter)
 /// for more information on how to use TextInputFormatter.
 class CurrencyTextInputFormatter extends TextInputFormatter {
   /// Builds an CurrencyTextInputFormatter with the following parameters.
   ///
-  /// [locale] argument is used to locale of NumberFormat currency.
-  ///
-  /// [name] argument is used to locale of NumberFormat currency.
-  ///
-  /// [symbol] argument is used to symbol of NumberFormat currency.
-  ///
-  /// [decimalDigits] argument is used to decimalDigits of NumberFormat currency.
-  ///
-  /// [customPattern] argument is used to locale of NumberFormat currency.
+  /// [numberFormat] NumberFormat of currency.
   ///
   /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
   ///
@@ -33,12 +25,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [maxValue] argument is used to set max value.
   ///
   /// [onChange] argument is used to set callback when value is changed.
-  CurrencyTextInputFormatter({
-    this.locale,
-    this.name,
-    this.symbol,
-    this.decimalDigits,
-    this.customPattern,
+  CurrencyTextInputFormatter(
+    this.numberFormat, {
     this.turnOffGrouping = false,
     this.enableNegative = true,
     this.inputDirection = InputDirection.right,
@@ -46,46 +34,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.maxValue,
     this.onChange,
   }) {
-    _format = NumberFormat.currency(
-      locale: locale,
-      name: name,
-      symbol: symbol,
-      decimalDigits: decimalDigits,
-      customPattern: customPattern,
-    );
     if (turnOffGrouping) {
-      _format.turnOffGrouping();
+      numberFormat.turnOffGrouping();
     }
   }
 
-  /// Defaults `locale` is null.
-  ///
-  /// Put 'en' or 'es' for locale
-  final String? locale;
-
-  /// Defaults `name` is null.
-  ///
-  /// the currency with that ISO 4217 name will be used.
-  /// Otherwise we will use the default currency name for the current locale.
-  /// If no [symbol] is specified, we will use the currency name in the formatted result.
-  /// e.g. var f = NumberFormat.currency(locale: 'en_US', name: 'EUR') will format currency like "EUR1.23".
-  /// If we did not specify the name, it would format like "USD1.23".
-  final String? name;
-
-  /// Defaults `symbol` is null.
-  ///
-  /// Put '\$' for symbol
-  final String? symbol;
-
-  /// Defaults `decimalDigits` is null.
-  final int? decimalDigits;
-
-  /// Defaults `customPattern` is null.
-  ///
-  /// Can be used to specify a particular format.
-  /// This is useful if you have your own locale data which includes unsupported formats
-  /// (e.g. accounting format for currencies.)
-  final String? customPattern;
+  final NumberFormat numberFormat;
 
   /// Defaults `turnOffGrouping` is false.
   ///
@@ -117,17 +71,16 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// e.g. onChange: (value) => print(value);
   final Function(String)? onChange;
 
-  late NumberFormat _format;
   num _newNum = 0;
   String _newString = '';
   bool _isNegative = false;
 
-  void _formatter(String newText) {
+  void numberFormatter(String newText) {
     _newNum = num.tryParse(newText) ?? 0;
-    if (_format.decimalDigits! > 0) {
-      _newNum /= pow(10, _format.decimalDigits!);
+    if (numberFormat.decimalDigits! > 0) {
+      _newNum /= pow(10, numberFormat.decimalDigits!);
     }
-    _newString = (_isNegative ? '-' : '') + _format.format(_newNum).trim();
+    _newString = (_isNegative ? '-' : '') + numberFormat.format(_newNum).trim();
   }
 
   bool _isLessThanMinValue() {
@@ -155,7 +108,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       if (nums.length > 2) {
         return oldValue;
       }
-      if (nums.length == 2 && (nums[1].length > (_format.decimalDigits ?? 2))) {
+      if (nums.length == 2 &&
+          (nums[1].length > (numberFormat.decimalDigits ?? 2))) {
         return oldValue;
       }
       final double? v = double.tryParse(newValue.text);
@@ -179,7 +133,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     // Apparently, Flutter has a bug where the framework calls
     // formatEditUpdate twice, or even four times, after a backspace press (see
-    // https://github.com/gtgalone/currency_text_input_formatter/issues/11).
+    // https://github.com/gtgalone/currency_text_inputnumberFormatter/issues/11).
     // However, only the first of these calls has inputs which are consistent
     // with a character insertion/removal at the end (which is the most common
     // use case of editing the TextField - the others being insertion/removal
@@ -207,7 +161,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       newText = newText.substring(0, length > 0 ? length : 0);
     }
 
-    _formatter(newText);
+    numberFormatter(newText);
 
     if (_isLessThanMinValue() || _isMoreThanMaxValue()) {
       return oldValue;
@@ -256,7 +210,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final String newText = value.replaceAll(RegExp('[^0-9]'), '');
-    _formatter(newText);
+    numberFormatter(newText);
     return _newString;
   }
 
@@ -270,10 +224,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final String newText = value
-        .toStringAsFixed(decimalDigits ?? 0)
+        .toStringAsFixed(numberFormat.decimalDigits ?? 0)
         .replaceAll(RegExp('[^0-9]'), '');
-    _formatter(newText);
+    numberFormatter(newText);
     return _newString;
+  }
+
+  /// get double value
+  double getDouble() {
+    return getUnformattedValue().toDouble();
   }
 }
 

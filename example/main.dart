@@ -1,6 +1,7 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +16,9 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: TextField(
-            inputFormatters: <TextInputFormatter>[CurrencyTextInputFormatter()],
+            inputFormatters: <TextInputFormatter>[
+              CurrencyTextInputFormatter(NumberFormat())
+            ],
             keyboardType: TextInputType.number,
           ),
         ),
