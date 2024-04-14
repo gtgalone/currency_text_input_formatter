@@ -14,8 +14,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   ///
   /// [format] Number format .
   ///
-  /// [decimalDigits] argument is used to decimalDigits of NumberFormat currency.
-  ///
   /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
   ///
   /// [enableNegative] argument is used to enable negative value.
@@ -40,8 +38,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       format.turnOffGrouping();
     }
 
-    return CurrencyTextInputFormatter._(format, turnOffGrouping, enableNegative,
-        inputDirection, minValue, maxValue, onChange);
+    return CurrencyTextInputFormatter._(
+      format,
+      turnOffGrouping,
+      enableNegative,
+      inputDirection,
+      minValue,
+      maxValue,
+      onChange,
+    );
   }
 
   CurrencyTextInputFormatter._(
@@ -102,8 +107,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       format.turnOffGrouping();
     }
 
-    return CurrencyTextInputFormatter._(format, turnOffGrouping, enableNegative,
-        inputDirection, minValue, maxValue, onChange);
+    return CurrencyTextInputFormatter._(
+      format,
+      turnOffGrouping,
+      enableNegative,
+      inputDirection,
+      minValue,
+      maxValue,
+      onChange,
+    );
   }
 
   /// Builds an CurrencyTextInputFormatter with simpleCurrency the following parameters.
