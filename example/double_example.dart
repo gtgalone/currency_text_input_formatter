@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
                     onPressed: () async {
                       final String doubleValue = simpleformatter
                           .getDouble()
-                          .toStringAsFixed(simpleformatter.decimalDigits ?? 0);
+                          .toStringAsFixed(
+                              simpleformatter.numberFormat.decimalDigits ?? 0);
 
                       await showDialog(
                         context: context,
@@ -68,7 +69,8 @@ class MyApp extends StatelessWidget {
                     onPressed: () async {
                       final String doubleValue = formatter
                           .getDouble()
-                          .toStringAsFixed(formatter.decimalDigits ?? 0);
+                          .toStringAsFixed(
+                              formatter.numberFormat.decimalDigits ?? 0);
 
                       await showDialog(
                         context: context,

@@ -194,9 +194,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   String _newString = '';
   bool _isNegative = false;
 
-  /// Returns the decimal Digits from the NumberFormat
-  int? get decimalDigits {
-    return format.decimalDigits;
+  /// Returns the NumberFormat created on currency and simpleCurrency constructors
+  NumberFormat get numberFormat {
+    return format;
   }
 
   void _formatter(String newText) {
