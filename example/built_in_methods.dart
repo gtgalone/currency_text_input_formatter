@@ -5,14 +5,15 @@ import 'package:flutter/services.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CurrencyTextInputFormatter formatter = CurrencyTextInputFormatter();
+  final CurrencyTextInputFormatter formatter =
+      CurrencyTextInputFormatter.currency();
 
   @override
   Widget build(BuildContext context) {
     // Built-in Methods
     print(formatter.getFormattedValue()); // $ 2,000
     print(formatter.getUnformattedValue()); // 2000.00
-    print(formatter.format('2000')); // $ 2,000
+    print(formatter.formatString('2000')); // $ 2,000
 
     return MaterialApp(
       title: 'Welcome to Flutter',

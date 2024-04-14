@@ -12,6 +12,50 @@ import 'package:intl/intl.dart';
 class CurrencyTextInputFormatter extends TextInputFormatter {
   /// Builds an CurrencyTextInputFormatter with the following parameters.
   ///
+  /// [format] Number format .
+  ///
+  /// [decimalDigits] argument is used to decimalDigits of NumberFormat currency.
+  ///
+  /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
+  ///
+  /// [enableNegative] argument is used to enable negative value.
+  ///
+  /// [inputDirection] argument is used to set input direction.
+  ///
+  /// [minValue] argument is used to set min value.
+  ///
+  /// [maxValue] argument is used to set max value.
+  ///
+  /// [onChange] argument is used to set callback when value is changed.
+  factory CurrencyTextInputFormatter(
+    NumberFormat format, {
+    bool turnOffGrouping = false,
+    bool enableNegative = true,
+    InputDirection inputDirection = InputDirection.right,
+    int? minValue,
+    int? maxValue,
+    Function(String)? onChange,
+  }) {
+    if (turnOffGrouping) {
+      format.turnOffGrouping();
+    }
+
+    return CurrencyTextInputFormatter._(format, turnOffGrouping, enableNegative,
+        inputDirection, minValue, maxValue, onChange);
+  }
+
+  CurrencyTextInputFormatter._(
+    this.format,
+    this.turnOffGrouping,
+    this.enableNegative,
+    this.inputDirection,
+    this.minValue,
+    this.maxValue,
+    this.onChange,
+  );
+
+  /// Builds an CurrencyTextInputFormatter with the following parameters.
+  ///
   /// [locale] argument is used to locale of NumberFormat currency.
   ///
   /// [name] argument is used to locale of NumberFormat currency.
@@ -33,59 +77,88 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [maxValue] argument is used to set max value.
   ///
   /// [onChange] argument is used to set callback when value is changed.
-  CurrencyTextInputFormatter({
-    this.locale,
-    this.name,
-    this.symbol,
-    this.decimalDigits,
-    this.customPattern,
-    this.turnOffGrouping = false,
-    this.enableNegative = true,
-    this.inputDirection = InputDirection.right,
-    this.minValue,
-    this.maxValue,
-    this.onChange,
+  factory CurrencyTextInputFormatter.currency({
+    String? locale,
+    String? name,
+    String? symbol,
+    int? decimalDigits,
+    String? customPattern,
+    bool turnOffGrouping = false,
+    bool enableNegative = true,
+    InputDirection inputDirection = InputDirection.right,
+    int? minValue,
+    int? maxValue,
+    Function(String)? onChange,
   }) {
-    _format = NumberFormat.currency(
+    final NumberFormat format = NumberFormat.currency(
       locale: locale,
       name: name,
       symbol: symbol,
       decimalDigits: decimalDigits,
       customPattern: customPattern,
     );
+
     if (turnOffGrouping) {
-      _format.turnOffGrouping();
+      format.turnOffGrouping();
     }
+
+    return CurrencyTextInputFormatter._(format, turnOffGrouping, enableNegative,
+        inputDirection, minValue, maxValue, onChange);
   }
 
-  /// Defaults `locale` is null.
+  /// Builds an CurrencyTextInputFormatter with simpleCurrency the following parameters.
   ///
-  /// Put 'en' or 'es' for locale
-  final String? locale;
-
-  /// Defaults `name` is null.
+  /// [locale] argument is used to locale of NumberFormat currency.
   ///
-  /// the currency with that ISO 4217 name will be used.
-  /// Otherwise we will use the default currency name for the current locale.
-  /// If no [symbol] is specified, we will use the currency name in the formatted result.
-  /// e.g. var f = NumberFormat.currency(locale: 'en_US', name: 'EUR') will format currency like "EUR1.23".
-  /// If we did not specify the name, it would format like "USD1.23".
-  final String? name;
-
-  /// Defaults `symbol` is null.
+  /// [name] argument is used to locale of NumberFormat currency.
   ///
-  /// Put '\$' for symbol
-  final String? symbol;
-
-  /// Defaults `decimalDigits` is null.
-  final int? decimalDigits;
-
-  /// Defaults `customPattern` is null.
+  /// [decimalDigits] argument is used to decimalDigits of NumberFormat currency.
   ///
-  /// Can be used to specify a particular format.
-  /// This is useful if you have your own locale data which includes unsupported formats
-  /// (e.g. accounting format for currencies.)
-  final String? customPattern;
+  /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
+  ///
+  /// [enableNegative] argument is used to enable negative value.
+  ///
+  /// [inputDirection] argument is used to set input direction.
+  ///
+  /// [minValue] argument is used to set min value.
+  ///
+  /// [maxValue] argument is used to set max value.
+  ///
+  /// [onChange] argument is used to set callback when value is changed.
+  factory CurrencyTextInputFormatter.simpleCurrency({
+    String? locale,
+    String? name,
+    int? decimalDigits,
+    bool turnOffGrouping = false,
+    bool enableNegative = true,
+    InputDirection inputDirection = InputDirection.right,
+    int? minValue,
+    int? maxValue,
+    Function(String)? onChange,
+  }) {
+    final NumberFormat format = NumberFormat.simpleCurrency(
+      locale: locale,
+      name: name,
+      decimalDigits: decimalDigits,
+    );
+
+    if (turnOffGrouping) {
+      format.turnOffGrouping();
+    }
+
+    return CurrencyTextInputFormatter._(
+      format,
+      turnOffGrouping,
+      enableNegative,
+      inputDirection,
+      minValue,
+      maxValue,
+      onChange,
+    );
+  }
+
+  /// NumberFormat
+  final NumberFormat format;
 
   /// Defaults `turnOffGrouping` is false.
   ///
@@ -117,17 +190,21 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// e.g. onChange: (value) => print(value);
   final Function(String)? onChange;
 
-  late NumberFormat _format;
   num _newNum = 0;
   String _newString = '';
   bool _isNegative = false;
 
+  /// Returns the decimal Digits from the NumberFormat
+  int? get decimalDigits {
+    return format.decimalDigits;
+  }
+
   void _formatter(String newText) {
     _newNum = num.tryParse(newText) ?? 0;
-    if (_format.decimalDigits! > 0) {
-      _newNum /= pow(10, _format.decimalDigits!);
+    if (format.decimalDigits! > 0) {
+      _newNum /= pow(10, format.decimalDigits!);
     }
-    _newString = (_isNegative ? '-' : '') + _format.format(_newNum).trim();
+    _newString = (_isNegative ? '-' : '') + format.format(_newNum).trim();
   }
 
   bool _isLessThanMinValue() {
@@ -155,7 +232,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       if (nums.length > 2) {
         return oldValue;
       }
-      if (nums.length == 2 && (nums[1].length > (_format.decimalDigits ?? 2))) {
+      if (nums.length == 2 && (nums[1].length > (format.decimalDigits ?? 2))) {
         return oldValue;
       }
       final double? v = double.tryParse(newValue.text);
@@ -248,7 +325,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   /// Method for formatting value.
   /// You can use initialValue with this method.
-  String format(String value) {
+  String formatString(String value) {
     if (enableNegative) {
       _isNegative = value.startsWith('-');
     } else {
@@ -270,10 +347,15 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final String newText = value
-        .toStringAsFixed(decimalDigits ?? 0)
+        .toStringAsFixed(format.decimalDigits ?? 0)
         .replaceAll(RegExp('[^0-9]'), '');
     _formatter(newText);
     return _newString;
+  }
+
+  /// get double value
+  double getDouble() {
+    return getUnformattedValue().toDouble();
   }
 }
 

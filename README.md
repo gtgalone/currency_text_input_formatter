@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: TextField(
-            inputFormatters: [CurrencyTextInputFormatter()],
+            inputFormatters: [CurrencyTextInputFormatter.currency()],
             keyboardType: TextInputType.number,
           ),
         ),
@@ -82,7 +82,7 @@ class MyFormField extends StatefulWidget {
 }
 
 class _MyFormFieldState extends State<MyFormField> {
-  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter.currency();
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: TextField(
             inputFormatters: <TextInputFormatter>[
-              CurrencyTextInputFormatter(
+              CurrencyTextInputFormatter.currency(
                 locale: 'ko',
                 decimalDigits: 0,
                 symbol: 'KRW(원) ',
@@ -162,7 +162,7 @@ class MyFormField extends StatefulWidget {
 }
 
 class _MyFormFieldState extends State<MyFormField> {
-  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter.currency();
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final CurrencyTextInputFormatter _formatter = CurrencyTextInputFormatter();
+  final CurrencyTextInputFormatter _formatter =
+      CurrencyTextInputFormatter.currency();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: TextFormField(
-            initialValue: _formatter.format('2000'),
+            initialValue: _formatter.formatString('2000'),
             inputFormatters: <TextInputFormatter>[_formatter],
             keyboardType: TextInputType.number,
           ),
