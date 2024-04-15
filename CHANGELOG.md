@@ -123,3 +123,7 @@
 # 2.2.0
 
   * Add multiple constructor for CurrencyTextInputFormatter.(#53) Huge Thanks! @rsegecin
+
+# 2.2.1
+
+  * Removed turnoffGrouping only for the constructor that accepts format.(#54) Huge Thanks! @rsegecin
