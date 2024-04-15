@@ -14,8 +14,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   ///
   /// [format] Number format .
   ///
-  /// [turnOffGrouping] argument is used to locale of NumberFormat currency.
-  ///
   /// [enableNegative] argument is used to enable negative value.
   ///
   /// [inputDirection] argument is used to set input direction.
@@ -27,20 +25,14 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [onChange] argument is used to set callback when value is changed.
   factory CurrencyTextInputFormatter(
     NumberFormat format, {
-    bool turnOffGrouping = false,
     bool enableNegative = true,
     InputDirection inputDirection = InputDirection.right,
     int? minValue,
     int? maxValue,
     Function(String)? onChange,
   }) {
-    if (turnOffGrouping) {
-      format.turnOffGrouping();
-    }
-
     return CurrencyTextInputFormatter._(
       format,
-      turnOffGrouping,
       enableNegative,
       inputDirection,
       minValue,
@@ -51,7 +43,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   CurrencyTextInputFormatter._(
     this.format,
-    this.turnOffGrouping,
     this.enableNegative,
     this.inputDirection,
     this.minValue,
@@ -109,7 +100,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     return CurrencyTextInputFormatter._(
       format,
-      turnOffGrouping,
       enableNegative,
       inputDirection,
       minValue,
@@ -160,7 +150,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     return CurrencyTextInputFormatter._(
       format,
-      turnOffGrouping,
       enableNegative,
       inputDirection,
       minValue,
@@ -171,13 +160,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   /// NumberFormat
   final NumberFormat format;
-
-  /// Defaults `turnOffGrouping` is false.
-  ///
-  /// Explicitly turn off any grouping (e.g. by thousands) in this format.
-  /// This is used in compact number formatting, where we omit the normal grouping.
-  /// Best to know what you're doing if you call it.
-  final bool turnOffGrouping;
 
   /// Defaults `enableNegative` is true.
   ///
