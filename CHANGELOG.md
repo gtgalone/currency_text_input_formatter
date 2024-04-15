@@ -119,3 +119,7 @@
 # 2.1.14
 
   * Add onChange parameters.(#51) Huge Thanks! @laripeanuts
+
+# 2.2.0
+
+  * Add multiple constructor for CurrencyTextInputFormatter.(#53) Huge Thanks! @rsegecin
