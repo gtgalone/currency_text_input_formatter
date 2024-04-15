@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: TextField(
-            inputFormatters: <TextInputFormatter>[CurrencyTextInputFormatter()],
+            inputFormatters: <TextInputFormatter>[
+              CurrencyTextInputFormatter.currency()
+            ],
             keyboardType: TextInputType.number,
           ),
         ),

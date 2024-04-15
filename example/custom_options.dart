@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: TextField(
             inputFormatters: <TextInputFormatter>[
-              CurrencyTextInputFormatter(
+              CurrencyTextInputFormatter.currency(
                 locale: 'ko',
                 decimalDigits: 0,
                 symbol: 'KRW(원) ',
