@@ -27,8 +27,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     NumberFormat format, {
     bool enableNegative = true,
     InputDirection inputDirection = InputDirection.right,
-    int? minValue,
-    int? maxValue,
+    num? minValue,
+    num? maxValue,
     Function(String)? onChange,
   }) {
     return CurrencyTextInputFormatter._(
@@ -82,8 +82,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     bool turnOffGrouping = false,
     bool enableNegative = true,
     InputDirection inputDirection = InputDirection.right,
-    int? minValue,
-    int? maxValue,
+    num? minValue,
+    num? maxValue,
     Function(String)? onChange,
   }) {
     final NumberFormat format = NumberFormat.currency(
@@ -134,8 +134,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     bool turnOffGrouping = false,
     bool enableNegative = true,
     InputDirection inputDirection = InputDirection.right,
-    int? minValue,
-    int? maxValue,
+    num? minValue,
+    num? maxValue,
     Function(String)? onChange,
   }) {
     final NumberFormat format = NumberFormat.simpleCurrency(
