@@ -127,3 +127,7 @@
 # 2.2.1
 
   * Removed turnoffGrouping only for the constructor that accepts format.(#54) Huge Thanks! @rsegecin
+
+# 2.2.2
+
+  * Accept num type for minValue and maxValue.(#55) Huge Thanks! @tainanfochesatto
