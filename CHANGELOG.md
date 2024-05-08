@@ -131,3 +131,7 @@
 # 2.2.2
 
   * Accept num type for minValue and maxValue.(#55) Huge Thanks! @tainanfochesatto
+
+# 2.2.3
+
+  * Fix value update #56 Huge Thanks! @tainanfochesatto
