@@ -194,25 +194,30 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   }
 
   void _formatter(String newText) {
-    _newNum = num.tryParse(newText) ?? 0;
-    if (format.decimalDigits! > 0) {
-      _newNum /= pow(10, format.decimalDigits!);
-    }
+    _newNum = _parseStrToNum(newText);
     _newString = (_isNegative ? '-' : '') + format.format(_newNum).trim();
   }
 
-  bool _isLessThanMinValue() {
+  num _parseStrToNum(String text) {
+    num value = num.tryParse(text) ?? 0;
+    if (format.decimalDigits! > 0) {
+      value /= pow(10, format.decimalDigits!);
+    }
+    return value;
+  }
+
+  bool _isLessThanMinValue(num value) {
     if (minValue == null) {
       return false;
     }
-    return _newNum < minValue!;
+    return value < minValue!;
   }
 
-  bool _isMoreThanMaxValue() {
+  bool _isMoreThanMaxValue(num value) {
     if (maxValue == null) {
       return false;
     }
-    return _newNum > maxValue!;
+    return value > maxValue!;
   }
 
   @override
@@ -233,11 +238,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       if (v == null) {
         return oldValue;
       }
-      _newNum = v;
-      _newString = newValue.text;
-      if (_isLessThanMinValue() || _isMoreThanMaxValue()) {
+      if (_isLessThanMinValue(v) || _isMoreThanMaxValue(v)) {
         return oldValue;
       }
+      _newNum = v;
+      _newString = newValue.text;
       return newValue;
     }
 
@@ -278,11 +283,13 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       newText = newText.substring(0, length > 0 ? length : 0);
     }
 
-    _formatter(newText);
+    final num value = _parseStrToNum(newText);
 
-    if (_isLessThanMinValue() || _isMoreThanMaxValue()) {
+    if (_isLessThanMinValue(value) || _isMoreThanMaxValue(value)) {
       return oldValue;
     }
+
+    _formatter(newText);
 
     if (newText.trim() == '' || newText == '00' || newText == '000') {
       return TextEditingValue(
