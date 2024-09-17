@@ -316,15 +316,21 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     String oldText,
     int cursorPosition,
   ) {
+    // Empty text start cursor from length of masked string
     if (oldText.isEmpty) {
       return _newString.length;
     }
 
-    if (cursorPosition < format.currencySymbol.length) {
-      if (_newNum < 1) {
+    final num oldNumber =
+        _parseStrToNum(oldText.replaceAll(RegExp('[^0-9]'), ''));
+
+    // When cursor is before currency symbol
+    if (cursorPosition <= format.currencySymbol.length) {
+      // When text editing starts from select all & overwrite
+      if (oldText.length >= _newString.length) {
         return _newString.length;
       }
-      return format.currencySymbol.length;
+      return format.currencySymbol.length + 1;
     }
 
     // Comma calculations
@@ -339,14 +345,14 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
         .where((int element) => element < cursorPosition)
         .length;
 
+    cursorPosition =
+        cursorPosition + newCommasBeforeCursor - oldCommasBeforeCursor;
+
     // Shift after comma
     if (newCommaPositions.contains(cursorPosition) &&
         _newString.length > oldText.length) {
       cursorPosition += 1;
     }
-
-    final num oldNumber =
-        _parseStrToNum(oldText.replaceAll(RegExp('[^0-9]'), ''));
 
     // Decimal calculations
     final List<int> decimalPositions =
@@ -370,7 +376,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       return _newString.length;
     }
 
-    return cursorPosition + newCommasBeforeCursor - oldCommasBeforeCursor;
+    return cursorPosition;
   }
 
   static List<int> _seperatorPositions(String text, {String separator = ','}) {
