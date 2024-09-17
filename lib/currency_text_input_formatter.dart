@@ -303,10 +303,84 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       onChange!(_newString);
     }
 
+    final int cursorPosition =
+        _calculateCursorPosition(oldValue.text, newValue.selection.end);
+
     return TextEditingValue(
       text: _newString,
-      selection: TextSelection.collapsed(offset: _newString.length),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
+  }
+
+  int _calculateCursorPosition(
+    String oldText,
+    int cursorPosition,
+  ) {
+    if (oldText.isEmpty) {
+      return _newString.length;
+    }
+
+    if (cursorPosition < format.currencySymbol.length) {
+      if (_newNum < 1) {
+        return _newString.length;
+      }
+      return format.currencySymbol.length;
+    }
+
+    // Comma calculations
+    final List<int> oldCommaPositions = _seperatorPositions(oldText);
+    final List<int> newCommaPositions = _seperatorPositions(_newString);
+
+    final int newCommasBeforeCursor = newCommaPositions
+        .where((int element) => element < cursorPosition)
+        .length;
+
+    final int oldCommasBeforeCursor = oldCommaPositions
+        .where((int element) => element < cursorPosition)
+        .length;
+
+    // Shift after comma
+    if (newCommaPositions.contains(cursorPosition) &&
+        _newString.length > oldText.length) {
+      cursorPosition += 1;
+    }
+
+    final num oldNumber =
+        _parseStrToNum(oldText.replaceAll(RegExp('[^0-9]'), ''));
+
+    // Decimal calculations
+    final List<int> decimalPositions =
+        _seperatorPositions(_newString, separator: '.');
+
+    // Shift after decimal
+    if (format.decimalDigits != null) {
+      if (decimalPositions
+              .where((int element) => element <= cursorPosition)
+              .isNotEmpty &&
+          _newNum < 1) {
+        if (oldNumber > _newNum) {
+          cursorPosition += 1;
+        } else if (oldNumber <= _newNum) {
+          cursorPosition -= 1;
+        }
+      }
+    }
+
+    if (cursorPosition > _newString.length) {
+      return _newString.length;
+    }
+
+    return cursorPosition + newCommasBeforeCursor - oldCommasBeforeCursor;
+  }
+
+  static List<int> _seperatorPositions(String text, {String separator = ','}) {
+    final List<int> positions = <int>[];
+    for (int i = 0; i < text.length; i++) {
+      if (text[i] == separator) {
+        positions.add(i);
+      }
+    }
+    return positions;
   }
 
   static bool _lastCharacterIsDigit(String text) {
