@@ -321,6 +321,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       return _newString.length;
     }
 
+    // When number starts with negative
+    if (oldText == '-' && _newString.startsWith('-')) {
+      return _newString.length;
+    }
+
     final num oldNumber =
         _parseStrToNum(oldText.replaceAll(RegExp('[^0-9]'), ''));
 
