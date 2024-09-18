@@ -10,7 +10,7 @@ https://pub.dev/packages/currency_text_input_formatter
 ### Add pubspec.yaml
 ``` yaml
 dependencies:
-  currency_text_input_formatter: ^2.2.3
+  currency_text_input_formatter: ^2.2.4
 ```
 ### Solving Intl package conflict
 Add this code end of pubspec.yaml.
