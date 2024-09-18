@@ -134,4 +134,9 @@
 
 # 2.2.3
 
-  * Fix value update #56 Huge Thanks! @tainanfochesatto
+  * Fix value update.(#56) Huge Thanks! @tainanfochesatto
+
+# 2.2.4
+
+  * Maintain cursor position.(#25) Huge Thanks! @jonsaw
+
