@@ -303,10 +303,95 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       onChange!(_newString);
     }
 
+    final int cursorPosition =
+        _calculateCursorPosition(oldValue.text, newValue.selection.end);
+
     return TextEditingValue(
       text: _newString,
-      selection: TextSelection.collapsed(offset: _newString.length),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
+  }
+
+  int _calculateCursorPosition(
+    String oldText,
+    int cursorPosition,
+  ) {
+    // Empty text start cursor from length of masked string
+    if (oldText.isEmpty) {
+      return _newString.length;
+    }
+
+    // When number starts with negative
+    if (oldText == '-' && _newString.startsWith('-')) {
+      return _newString.length;
+    }
+
+    final num oldNumber =
+        _parseStrToNum(oldText.replaceAll(RegExp('[^0-9]'), ''));
+
+    // When cursor is before currency symbol
+    if (cursorPosition <= format.currencySymbol.length) {
+      // When text editing starts from select all & overwrite
+      if (oldText.length >= _newString.length) {
+        return _newString.length;
+      }
+      return format.currencySymbol.length + 1;
+    }
+
+    // Comma calculations
+    final List<int> oldCommaPositions = _seperatorPositions(oldText);
+    final List<int> newCommaPositions = _seperatorPositions(_newString);
+
+    final int newCommasBeforeCursor = newCommaPositions
+        .where((int element) => element < cursorPosition)
+        .length;
+
+    final int oldCommasBeforeCursor = oldCommaPositions
+        .where((int element) => element < cursorPosition)
+        .length;
+
+    cursorPosition =
+        cursorPosition + newCommasBeforeCursor - oldCommasBeforeCursor;
+
+    // Shift after comma
+    if (newCommaPositions.contains(cursorPosition) &&
+        _newString.length > oldText.length) {
+      cursorPosition += 1;
+    }
+
+    // Decimal calculations
+    final List<int> decimalPositions =
+        _seperatorPositions(_newString, separator: '.');
+
+    // Shift after decimal
+    if (format.decimalDigits != null) {
+      if (decimalPositions
+              .where((int element) => element <= cursorPosition)
+              .isNotEmpty &&
+          _newNum < 1) {
+        if (oldNumber > _newNum) {
+          cursorPosition += 1;
+        } else if (oldNumber <= _newNum) {
+          cursorPosition -= 1;
+        }
+      }
+    }
+
+    if (cursorPosition > _newString.length) {
+      return _newString.length;
+    }
+
+    return cursorPosition;
+  }
+
+  static List<int> _seperatorPositions(String text, {String separator = ','}) {
+    final List<int> positions = <int>[];
+    for (int i = 0; i < text.length; i++) {
+      if (text[i] == separator) {
+        positions.add(i);
+      }
+    }
+    return positions;
   }
 
   static bool _lastCharacterIsDigit(String text) {
