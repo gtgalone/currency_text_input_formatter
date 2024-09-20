@@ -140,3 +140,7 @@
 
   * Maintain cursor position.(#25) Huge Thanks! @jonsaw
 
+# 2.2.5
+
+  * Revert changes PR #25. (#62)
+
