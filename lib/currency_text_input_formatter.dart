@@ -200,7 +200,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   num _parseStrToNum(String text) {
     num value = num.tryParse(text) ?? 0;
-    if (format.decimalDigits! > 0) {
+    if (format.decimalDigits != null && format.decimalDigits! > 0) {
       value /= pow(10, format.decimalDigits!);
     }
     return value;
