@@ -144,3 +144,6 @@
 
   * Revert changes PR #25. (#62)
 
+# 2.2.6
+
+  * Handle parsing of null decimalDigits.(#64) Huge Thanks! @cosmopool
