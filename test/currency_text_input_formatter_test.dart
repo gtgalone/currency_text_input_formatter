@@ -26,6 +26,14 @@ void main() {
     expect(value.text, '@0');
   });
 
+  test('Formats input correctly when decimal digits are null', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(symbol: '@');
+    final TextEditingValue value = formatter.formatEditUpdate(
+        TextEditingValue.empty, const TextEditingValue(text: '0'));
+    expect(value.text, '@0.00');
+  });
+
   test('Formats input with symbol, if symbol is provided', () {
     final CurrencyTextInputFormatter formatter =
         CurrencyTextInputFormatter.currency(symbol: '@');
