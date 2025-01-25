@@ -147,3 +147,7 @@
 # 2.2.6
 
   * Handle parsing of null decimalDigits.(#64) Huge Thanks! @cosmopool
+
+# 2.2.6
+
+  * Update intl package version range. Huge Thanks! @Bojan227 (#67)
