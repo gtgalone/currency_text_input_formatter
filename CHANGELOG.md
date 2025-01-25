@@ -148,6 +148,10 @@
 
   * Handle parsing of null decimalDigits.(#64) Huge Thanks! @cosmopool
 
-# 2.2.6
+# 2.2.7
 
   * Update intl package version range. Huge Thanks! @Bojan227 (#67)
+
+# 2.2.8
+
+  * Fix CHANGELOG.md
