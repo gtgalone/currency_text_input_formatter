@@ -89,7 +89,7 @@ class _MyFormFieldState extends State<MyFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: _formatter.format('2000'),
+      initialValue: _formatter.formatString('2000'),
       inputFormatters: <TextInputFormatter>[_formatter],
       keyboardType: TextInputType.number,
     );
@@ -171,7 +171,7 @@ class _MyFormFieldState extends State<MyFormField> {
     // Built-in Methods
     print(formatter.getFormattedValue()); // $ 2,000
     print(formatter.getUnformattedValue()); // 2000.00
-    print(formatter.format('2000')); // $ 2,000
+    print(formatter.formatString('2000')); // $ 2,000
     print(formatter.formatDouble('20.00')); // $ 20
 
     return TextFormField(
