@@ -155,3 +155,7 @@
 # 2.2.8
 
   * Fix CHANGELOG.md
+
+# 2.2.9
+
+  * Update intl version. (#69)
