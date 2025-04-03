@@ -227,6 +227,13 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   ) {
     final bool isLeft = inputDirection == InputDirection.left;
     if (isLeft) {
+      // Allow an empty field
+      if (newValue.text.isEmpty) {
+        _newNum = 0;
+        _newString = '';
+        return newValue;
+      }
+
       final List<String> nums = newValue.text.split('.');
       if (nums.length > 2) {
         return oldValue;
@@ -234,6 +241,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       if (nums.length == 2 && (nums[1].length > (format.decimalDigits ?? 2))) {
         return oldValue;
       }
+      // Prevents the user from entering a dot or comma at the beginning of the text
       final double? v = double.tryParse(newValue.text);
       if (v == null) {
         return oldValue;
@@ -298,7 +306,6 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       );
     }
 
-    /// Call onChange callback
     if (onChange != null) {
       onChange!(_newString);
     }
