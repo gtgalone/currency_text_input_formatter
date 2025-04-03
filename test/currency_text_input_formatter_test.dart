@@ -140,6 +140,20 @@ void main() {
         reason: 'Dot should not be allowed as first character');
   });
 
+  test('Does not allow space character in input', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency();
+
+    const TextEditingValue oldValue = TextEditingValue(text: '0');
+    const TextEditingValue newValue = TextEditingValue(text: '0 ');
+    final TextEditingValue result =
+        formatter.formatEditUpdate(oldValue, newValue);
+
+    // Since spaces are not allowed, the formatter should return the old value.
+    expect(result.text, oldValue.text,
+        reason: 'Space characters should be restricted.');
+  });
+
   test('Does not allow comma as first character when input direction is left',
       () {
     final CurrencyTextInputFormatter formatter =

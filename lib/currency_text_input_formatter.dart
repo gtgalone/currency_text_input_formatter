@@ -225,6 +225,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
+    // Prevent any space characters from being inserted
+    if (newValue.text.contains(' ')) {
+      return oldValue;
+    }
+
     final bool isLeft = inputDirection == InputDirection.left;
     if (isLeft) {
       // Allow an empty field
