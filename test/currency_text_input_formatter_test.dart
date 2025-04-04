@@ -99,6 +99,76 @@ void main() {
     expect(formatter.getDouble(), 123.25);
   });
 
+  test('Allows empty field when input direction is left', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(
+      inputDirection: InputDirection.left,
+    );
+    // Simulate an existing non-empty value
+    const TextEditingValue oldValue = TextEditingValue(text: '1');
+    // New value is an empty string
+    const TextEditingValue newValue = TextEditingValue(text: '');
+    final TextEditingValue value =
+        formatter.formatEditUpdate(oldValue, newValue);
+    expect(value.text, '', reason: 'Empty input should remain empty');
+  });
+
+  test('Empty input remains empty with left input direction', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(
+      inputDirection: InputDirection.left,
+    );
+    final TextEditingValue value = formatter.formatEditUpdate(
+      TextEditingValue.empty,
+      const TextEditingValue(text: ''),
+    );
+    expect(value.text, '', reason: 'Empty input should remain empty');
+  });
+
+  test('Does not allow dot as first character when input direction is left',
+      () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(
+      inputDirection: InputDirection.left,
+    );
+    const TextEditingValue oldValue = TextEditingValue.empty;
+    final TextEditingValue result = formatter.formatEditUpdate(
+      oldValue,
+      const TextEditingValue(text: '.'),
+    );
+    expect(result.text, '',
+        reason: 'Dot should not be allowed as first character');
+  });
+
+  test('Does not allow space character in input', () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency();
+
+    const TextEditingValue oldValue = TextEditingValue(text: '0');
+    const TextEditingValue newValue = TextEditingValue(text: '0 ');
+    final TextEditingValue result =
+        formatter.formatEditUpdate(oldValue, newValue);
+
+    // Since spaces are not allowed, the formatter should return the old value.
+    expect(result.text, oldValue.text,
+        reason: 'Space characters should be restricted.');
+  });
+
+  test('Does not allow comma as first character when input direction is left',
+      () {
+    final CurrencyTextInputFormatter formatter =
+        CurrencyTextInputFormatter.currency(
+      inputDirection: InputDirection.left,
+    );
+    const TextEditingValue oldValue = TextEditingValue.empty;
+    final TextEditingValue result = formatter.formatEditUpdate(
+      oldValue,
+      const TextEditingValue(text: ','),
+    );
+    expect(result.text, '',
+        reason: 'Comma should not be allowed as first character');
+  });
+
   group('Erasing last digit works', () {
     CurrencyTextInputFormatter formatter =
         CurrencyTextInputFormatter.currency();
