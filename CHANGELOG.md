@@ -142,7 +142,7 @@
 
 # 2.2.5
 
-  * Revert changes PR #25. (#62)
+  * Revert changes PR #25.(#62)
 
 # 2.2.6
 
@@ -158,4 +158,8 @@
 
 # 2.2.9
 
-  * Update intl version. (#69)
+  * Update intl version.(#69)
+
+# 2.3.0
+
+  * Fix allow empty input when inputDirection is left. (#58) Huge Thanks! @petarhristov94
