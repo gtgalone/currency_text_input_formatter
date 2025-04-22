@@ -1,62 +1,101 @@
-# 0.1.0
+# 2.3.0
 
-  * Publish initial version.
+  * Fix allow empty input when inputDirection is left. (#58) Huge Thanks! @petarhristov94
 
-# 0.1.1
+# 2.2.9
+  * Update intl version.(#69)
 
-  * Add exception for first digits 0.
+# 2.2.8
 
-# 0.1.2
+  * Fix CHANGELOG.md
 
-  * Add 0 price.
+# 2.2.7
 
-# 0.1.3
+  * Update intl package version range. Huge Thanks! @Bojan227 (#67)
 
-  * Change default symbol to ''.
+# 2.2.6
 
-# 0.1.4
+  * Handle parsing of null decimalDigits.(#64) Huge Thanks! @cosmopool
 
-  * Fix offset to last.
+# 2.2.5
 
-# 0.2.0
+  * Revert changes PR #25.(#62)
 
-  * Add negative.(#3) Huge Thanks! @holtalanm
+# 2.2.4
 
-# 0.3.0
+  * Maintain cursor position.(#25) Huge Thanks! @jonsaw
 
-  * Fix for surfix symbol currency deletion.(#6)(#7) Huge Thanks! @drbizeps
+# 2.2.3
 
-# 0.3.1
+  * Fix value update.(#56) Huge Thanks! @tainanfochesatto
 
-  * Change version for readme installation.
+# 2.2.2
 
-# 1.0.1
+  * Accept num type for minValue and maxValue.(#55) Huge Thanks! @tainanfochesatto
 
-  * Fix returns an extra space with '' symbol.(#9) and Add test code. Huge Thanks! @luistrivelatto
+# 2.2.1
 
-# 1.0.2
+  * Removed turnoffGrouping only for the constructor that accepts format.(#54) Huge Thanks! @rsegecin
 
-  * Change to ignore symbol only.(#11)
+# 2.2.0
 
-# 1.0.3
+  * Add multiple constructor for CurrencyTextInputFormatter.(#53) Huge Thanks! @rsegecin
 
-  * Refactor codes. Huge Thanks! @luistrivelatto
+# 2.1.14
 
-# 1.0.4
+  * Add onChange parameters.(#51) Huge Thanks! @laripeanuts
 
-  * Add option grouping turn off. Huge Thanks! @yuriescl
+# 2.1.13
 
-# 1.0.5
+  * Add minValue and maxValue parameters.(#48) Huge Thanks! @ayzerobug
 
-  * Update intl package to 0.17.0.(#15)
+# 2.1.12
 
-# 2.0.0
+  * Update intl version to 0.19.0.(#50) Huge Thanks! @NeKoFu
 
-  * Apply null safety. and Make default symbol is null. Add more parameters for NumberFormat currency.
+# 2.1.11
 
-# 2.0.1
+  * Add inputDirection parameter. It cannot support formatting stuff for now.
 
-  * Remove decimalDigits's default value for locale.
+# 2.1.10
+
+  * Supporting format for double values.(#47) Huge Thanks! @lmanerich
+
+# 2.1.9
+
+  * Update intl package to 0.18.0.(#44) Huge Thanks! @robertoltrocha
+
+# 2.1.8
+
+  * Add optional negative parameter.(#40) Huge Thanks! @chrallard
+
+# 2.1.7
+
+  * Remove prevent changes in the middle of value.(#34) Huge Thanks! @yoseptara
+
+# 2.1.6
+
+  * Add code to prevent changes in the middle of value.
+
+# 2.1.5
+
+  * Fix for negative value of `format` method. Huge Thanks! @jahoefne
+
+# 2.1.4
+
+  * Fix for negative value of `getUnformattedValue` method (#26). Huge Thanks! @kgabol
+
+# 2.1.3
+
+  * Add an example of built-in methods in readme.
+
+# 2.1.2
+
+  * Fix text selection bug (#24). Huge Thanks! @Pomb
+
+# 2.1.1
+
+  * Merge pull request handle num parsing error (#23). Huge Thanks! @al-fin
 
 # 2.1.0
 
@@ -64,102 +103,62 @@
   * Add `getFormattedValue` method.
   * Add `getUnformattedValue` method.
 
-# 2.1.1
+# 2.0.1
 
-  * Merge pull request handle num parsing error (#23). Huge Thanks! @al-fin
+  * Remove decimalDigits's default value for locale.
 
-# 2.1.2
+# 2.0.0
 
-  * Fix text selection bug (#24). Huge Thanks! @Pomb
+  * Apply null safety. and Make default symbol is null. Add more parameters for NumberFormat currency.
 
-# 2.1.3
+# 1.0.5
 
-  * Add an example of built-in methods in readme.
+  * Update intl package to 0.17.0.(#15)
 
-# 2.1.4
+# 1.0.4
 
-  * Fix for negative value of `getUnformattedValue` method (#26). Huge Thanks! @kgabol
+  * Add option grouping turn off. Huge Thanks! @yuriescl
 
-# 2.1.5
+# 1.0.3
 
-  * Fix for negative value of `format` method. Huge Thanks! @jahoefne
+  * Refactor codes. Huge Thanks! @luistrivelatto
 
-# 2.1.6
+# 1.0.2
 
-  * Add code to prevent changes in the middle of value.
+  * Change to ignore symbol only.(#11)
 
-# 2.1.7
+# 1.0.1
 
-  * Remove prevent changes in the middle of value.(#34) Huge Thanks! @yoseptara
+  * Fix returns an extra space with '' symbol.(#9) and Add test code. Huge Thanks! @luistrivelatto
 
-# 2.1.8
+# 0.3.1
 
-  * Add optional negative parameter.(#40) Huge Thanks! @chrallard
+  * Change version for readme installation.
 
-# 2.1.9
+# 0.3.0
 
-  * Update intl package to 0.18.0.(#44) Huge Thanks! @robertoltrocha
+  * Fix for surfix symbol currency deletion.(#6)(#7) Huge Thanks! @drbizeps
 
-# 2.1.10
+# 0.2.0
 
-  * Supporting format for double values.(#47) Huge Thanks! @lmanerich
+  * Add negative.(#3) Huge Thanks! @holtalanm
 
-# 2.1.11
+# 0.1.4
 
-  * Add inputDirection parameter. It cannot support formatting stuff for now.
+  * Fix offset to last.
 
-# 2.1.12
+# 0.1.3
 
-  * Update intl version to 0.19.0.(#50) Huge Thanks! @NeKoFu
+  * Change default symbol to ''.
 
-# 2.1.13
+# 0.1.2
 
-  * Add minValue and maxValue parameters.(#48) Huge Thanks! @ayzerobug
+  * Add 0 price.
 
-# 2.1.14
+# 0.1.1
 
-  * Add onChange parameters.(#51) Huge Thanks! @laripeanuts
+  * Add exception for first digits 0.
 
-# 2.2.0
+# 0.1.0
 
-  * Add multiple constructor for CurrencyTextInputFormatter.(#53) Huge Thanks! @rsegecin
-
-# 2.2.1
-
-  * Removed turnoffGrouping only for the constructor that accepts format.(#54) Huge Thanks! @rsegecin
-
-# 2.2.2
-
-  * Accept num type for minValue and maxValue.(#55) Huge Thanks! @tainanfochesatto
-
-# 2.2.3
-
-  * Fix value update.(#56) Huge Thanks! @tainanfochesatto
-
-# 2.2.4
-
-  * Maintain cursor position.(#25) Huge Thanks! @jonsaw
-
-# 2.2.5
-
-  * Revert changes PR #25.(#62)
-
-# 2.2.6
-
-  * Handle parsing of null decimalDigits.(#64) Huge Thanks! @cosmopool
-
-# 2.2.7
-
-  * Update intl package version range. Huge Thanks! @Bojan227 (#67)
-
-# 2.2.8
-
-  * Fix CHANGELOG.md
-
-# 2.2.9
-
-  * Update intl version.(#69)
-
-# 2.3.0
-
-  * Fix allow empty input when inputDirection is left. (#58) Huge Thanks! @petarhristov94
+  * Publish initial version.
