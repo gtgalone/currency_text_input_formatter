@@ -17,6 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: ^1.15.7
+  flutter_lints: ^3.0.0
 
 dependency_overrides:
   currency_text_input_formatter:

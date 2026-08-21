@@ -1,3 +1,8 @@
+# 2.3.2
+
+  * Update intl package version range to support latest intl. (#76) Huge Thanks! @JesusHdez960717
+  * Fix Flutter environment constraint.
+
 # 2.3.1
 
   * Fix bug when symbol contains spaces, which blocked inputs (#74). Huge Thanks! @JesusHdez960717
