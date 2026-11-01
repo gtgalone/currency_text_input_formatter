@@ -314,14 +314,20 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final num value = _parseStrToNum(newText);
+    final num signedValue = _isNegative ? -value : value;
 
-    if (_isLessThanMinValue(value) || _isMoreThanMaxValue(value)) {
+    if (_isLessThanMinValue(signedValue) || _isMoreThanMaxValue(signedValue)) {
       return oldValue;
     }
 
     _formatter(newText);
 
-    if (newText.trim() == '' || newText == '00' || newText == '000') {
+    // Clear the field when it is emptied, or when deleting a character leaves
+    // it at zero (e.g. backspace on "0.01"), but keep "0.00" when it is typed
+    // or pasted.
+    final bool isDeletion =
+        oldValue.text.length - 1 == newValue.text.length;
+    if (newText.isEmpty || (value == 0 && isDeletion)) {
       return TextEditingValue(
         text: _isNegative ? '-' : '',
         selection: TextSelection.collapsed(offset: _isNegative ? 1 : 0),
@@ -376,7 +382,8 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
   /// Get num type value without format such as `2000.00`
   num getUnformattedValue() {
-    return _isNegative ? (_newNum * -1) : _newNum;
+    // Avoid returning -0.0 for "-0.00".
+    return _isNegative && _newNum != 0 ? (_newNum * -1) : _newNum;
   }
 
   /// Method for formatting value.

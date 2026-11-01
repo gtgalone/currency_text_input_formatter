@@ -308,6 +308,57 @@ void main() {
   //         '12.345,67' + nbsp + '€');
   //   });
   // });
+
+  group('Zero and negative values (#65)', () {
+    TextEditingValue format(CurrencyTextInputFormatter formatter, String text,
+            [String oldText = '']) =>
+        formatter.formatEditUpdate(
+            TextEditingValue(text: oldText), TextEditingValue(text: text));
+
+    test('Typed or pasted zero is formatted instead of cleared', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(symbol: r'$');
+      expect(format(formatter, '0.00').text, r'$0.00');
+      expect(format(formatter, '0').text, r'$0.00');
+      expect(format(formatter, r'$0.000', r'$0.00').text, r'$0.00');
+
+      final CurrencyTextInputFormatter noDecimals =
+          CurrencyTextInputFormatter.currency(symbol: r'$', decimalDigits: 0);
+      expect(format(noDecimals, '00', '0').text, r'$0');
+    });
+
+    test('Deleting down to zero still clears the field', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(symbol: r'$');
+      expect(format(formatter, r'$0.0', r'$0.05').text, '');
+      expect(format(formatter, r'-$0.0', r'-$0.05').text, '-');
+    });
+
+    test('Negative values keep the symbol', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(symbol: r'$');
+      expect(format(formatter, '-1.00').text, r'-$1.00');
+      expect(formatter.getUnformattedValue(), -1);
+    });
+
+    test('minValue and maxValue take the sign into account', () {
+      final CurrencyTextInputFormatter positiveOnly =
+          CurrencyTextInputFormatter.currency(symbol: r'$', minValue: 0);
+      expect(format(positiveOnly, r'-$5.00', r'$5.00').text, r'$5.00');
+
+      final CurrencyTextInputFormatter withMax =
+          CurrencyTextInputFormatter.currency(symbol: r'$', maxValue: 10);
+      expect(format(withMax, r'-$50.00', r'-$5.00').text, r'-$50.00');
+      expect(format(withMax, r'$50.00', r'$5.00').text, r'$5.00');
+    });
+
+    test('Negative zero is unformatted as 0', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(symbol: r'$');
+      expect(format(formatter, '-0', '-').text, r'-$0.00');
+      expect(formatter.getUnformattedValue().isNegative, isFalse);
+    });
+  });
 }
 
 String removeLast(String s) => s.substring(0, s.length - 1);
