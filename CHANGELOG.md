@@ -1,3 +1,7 @@
+# Unreleased
+
+  * Add `maintainCursorPosition` option to keep the cursor in place when editing in the middle of the text (only for `InputDirection.right`). Defaults to `false`, so the cursor still jumps to the end as before.
+
 # 2.3.2
 
   * Update intl package version range to support latest intl. (#76) Huge Thanks! @JesusHdez960717

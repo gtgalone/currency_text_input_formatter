@@ -1,4 +1,5 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -167,6 +168,52 @@ void main() {
     );
     expect(result.text, '',
         reason: 'Comma should not be allowed as first character');
+  });
+
+  group('maintainCursorPosition', () {
+    // '123.45' -> cursor between 2 and 3, backspace -> '13.45'
+    const TextEditingValue oldValue = TextEditingValue(
+        text: '123.45', selection: TextSelection.collapsed(offset: 2));
+    const TextEditingValue deleted = TextEditingValue(
+        text: '13.45', selection: TextSelection.collapsed(offset: 1));
+
+    test('Keeps cursor in place after delete and insert', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(
+              symbol: '', maintainCursorPosition: true);
+      final TextEditingValue afterDelete =
+          formatter.formatEditUpdate(oldValue, deleted);
+      expect(afterDelete.text, '13.45');
+      expect(afterDelete.selection.baseOffset, 1);
+
+      final TextEditingValue afterInsert = formatter.formatEditUpdate(
+          afterDelete,
+          const TextEditingValue(
+              text: '193.45', selection: TextSelection.collapsed(offset: 2)));
+      expect(afterInsert.text, '193.45');
+      expect(afterInsert.selection.baseOffset, 2);
+    });
+
+    test('Keeps cursor across added group separator', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(
+              symbol: '', maintainCursorPosition: true);
+      // insert 9 after the 1 in '123.45' -> '1,923.45', cursor after 9
+      final TextEditingValue value = formatter.formatEditUpdate(
+          oldValue.copyWith(selection: const TextSelection.collapsed(offset: 1)),
+          const TextEditingValue(
+              text: '1923.45', selection: TextSelection.collapsed(offset: 2)));
+      expect(value.text, '1,923.45');
+      expect(value.selection.baseOffset, 3);
+    });
+
+    test('Cursor jumps to end by default', () {
+      final CurrencyTextInputFormatter formatter =
+          CurrencyTextInputFormatter.currency(symbol: '');
+      final TextEditingValue value =
+          formatter.formatEditUpdate(oldValue, deleted);
+      expect(value.selection.baseOffset, value.text.length);
+    });
   });
 
   group('Erasing last digit works', () {

@@ -126,6 +126,28 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+### Maintain cursor position
+By default the cursor jumps to the end of the text after every edit. Set
+`maintainCursorPosition: true` to keep it where you are editing, e.g. deleting
+the `2` in `123.45` gives `13.45` with the cursor between `1` and `3`, so typing
+`9` gives `193.45`.
+
+`maintainCursorPosition` defaults to `false` to keep the previous behavior.
+It only applies to `InputDirection.right` (with `InputDirection.left` the
+cursor is already kept).
+
+``` dart
+TextField(
+  inputFormatters: <TextInputFormatter>[
+    CurrencyTextInputFormatter.currency(
+      symbol: '\$ ',
+      maintainCursorPosition: true,
+    ),
+  ],
+  keyboardType: TextInputType.number,
+)
+```
+
 ### With built-in methods
 ``` dart
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';

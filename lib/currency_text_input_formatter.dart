@@ -23,6 +23,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [maxValue] argument is used to set max value.
   ///
   /// [onChange] argument is used to set callback when value is changed.
+  ///
+  /// [maintainCursorPosition] argument is used to keep the cursor in place
+  /// when editing in the middle of the text.
   factory CurrencyTextInputFormatter(
     NumberFormat format, {
     bool enableNegative = true,
@@ -30,6 +33,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     num? minValue,
     num? maxValue,
     Function(String)? onChange,
+    bool maintainCursorPosition = false,
   }) {
     return CurrencyTextInputFormatter._(
       format,
@@ -38,6 +42,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       minValue,
       maxValue,
       onChange,
+      maintainCursorPosition,
     );
   }
 
@@ -48,6 +53,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.minValue,
     this.maxValue,
     this.onChange,
+    this.maintainCursorPosition,
   );
 
   /// Builds an CurrencyTextInputFormatter with the following parameters.
@@ -73,6 +79,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [maxValue] argument is used to set max value.
   ///
   /// [onChange] argument is used to set callback when value is changed.
+  ///
+  /// [maintainCursorPosition] argument is used to keep the cursor in place
+  /// when editing in the middle of the text.
   factory CurrencyTextInputFormatter.currency({
     String? locale,
     String? name,
@@ -85,6 +94,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     num? minValue,
     num? maxValue,
     Function(String)? onChange,
+    bool maintainCursorPosition = false,
   }) {
     final NumberFormat format = NumberFormat.currency(
       locale: locale,
@@ -105,6 +115,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       minValue,
       maxValue,
       onChange,
+      maintainCursorPosition,
     );
   }
 
@@ -127,6 +138,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [maxValue] argument is used to set max value.
   ///
   /// [onChange] argument is used to set callback when value is changed.
+  ///
+  /// [maintainCursorPosition] argument is used to keep the cursor in place
+  /// when editing in the middle of the text.
   factory CurrencyTextInputFormatter.simpleCurrency({
     String? locale,
     String? name,
@@ -137,6 +151,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     num? minValue,
     num? maxValue,
     Function(String)? onChange,
+    bool maintainCursorPosition = false,
   }) {
     final NumberFormat format = NumberFormat.simpleCurrency(
       locale: locale,
@@ -155,6 +170,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       minValue,
       maxValue,
       onChange,
+      maintainCursorPosition,
     );
   }
 
@@ -183,6 +199,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// You can use this to listen to value changes.
   /// e.g. onChange: (value) => print(value);
   final Function(String)? onChange;
+
+  /// Defaults `maintainCursorPosition` is false (cursor jumps to the end).
+  ///
+  /// Set to true to keep the cursor where the user is editing.
+  /// Only applies to InputDirection.right.
+  final bool maintainCursorPosition;
 
   num _newNum = 0;
   String _newString = '';
@@ -312,9 +334,35 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     return TextEditingValue(
       text: _newString,
-      selection: TextSelection.collapsed(offset: _newString.length),
+      selection: TextSelection.collapsed(
+        offset: maintainCursorPosition
+            ? _cursorOffset(newValue)
+            : _newString.length,
+      ),
     );
   }
+
+  // Keeps the same number of digits to the right of the cursor, since
+  // formatting only changes what is on the left (leading zeros, separators).
+  int _cursorOffset(TextEditingValue newValue) {
+    final int cursor = newValue.selection.end;
+    if (cursor < 0 || cursor > newValue.text.length) {
+      return _newString.length;
+    }
+    int digitsRight =
+        _digit.allMatches(newValue.text.substring(cursor)).length;
+    if (digitsRight == 0) {
+      return _newString.length;
+    }
+    for (int i = _newString.length - 1; i >= 0; i--) {
+      if (_digit.hasMatch(_newString[i]) && --digitsRight == 0) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  static final RegExp _digit = RegExp('[0-9]');
 
   static bool _lastCharacterIsDigit(String text) {
     final String lastChar = text.substring(text.length - 1);

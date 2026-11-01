@@ -11,10 +11,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _formatter = CurrencyTextInputFormatter.currency(symbol: '\$ ');
   final _controller = TextEditingController();
+  // Formatters keep state, so each field needs its own instance.
+  final _cursorFormatter = CurrencyTextInputFormatter.currency(
+    symbol: '\$ ',
+    maintainCursorPosition: true,
+  );
+  final _cursorController = TextEditingController();
 
   void initState() {
     super.initState();
     _controller.text = _formatter.formatString('0.0');
+    _cursorController.text = _cursorFormatter.formatString('0.0');
   }
 
   @override
@@ -28,12 +35,27 @@ class _MyAppState extends State<MyApp> {
         body: Center(
           child: SizedBox(
             width: 250,
-            height: 50,
-            child: TextField(
-              controller: _controller,
-              inputFormatters: [_formatter],
-              decoration:
-              InputDecoration(label: Text('Label'), hint: Text('Hint')),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _controller,
+                  inputFormatters: [_formatter],
+                  decoration: InputDecoration(
+                    label: Text('maintainCursorPosition = false'),
+                    hint: Text('Hint'),
+                  ),
+                ),
+                SizedBox(height: 24),
+                TextField(
+                  controller: _cursorController,
+                  inputFormatters: [_cursorFormatter],
+                  decoration: InputDecoration(
+                    label: Text('maintainCursorPosition = true'),
+                    hint: Text('Hint'),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
