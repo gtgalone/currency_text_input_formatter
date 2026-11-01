@@ -1,6 +1,8 @@
-# Unreleased
+# 2.3.3
 
-  * Add `maintainCursorPosition` option to keep the cursor in place when editing in the middle of the text (only for `InputDirection.right`). Defaults to `false`, so the cursor still jumps to the end as before.
+  * Add `maintainCursorPosition` option to keep the cursor in place when editing in the middle of the text (only for `InputDirection.right`). Defaults to `false`, so the cursor still jumps to the end as before. (#77) Huge Thanks! @JesusHdez960717
+  * Fix zero input and signed `minValue` / `maxValue` handling, and avoid returning negative zero. (#78) Huge Thanks! @JesusHdez960717
+  * Preserve the accepted value when an edit is rejected by a limit, and keep zero when replacing selected text.
 
 # 2.3.2
 

@@ -18,10 +18,18 @@ class _MyAppState extends State<MyApp> {
   );
   final _cursorController = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     _controller.text = _formatter.formatString('0.0');
     _cursorController.text = _cursorFormatter.formatString('0.0');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _cursorController.dispose();
+    super.dispose();
   }
 
   @override

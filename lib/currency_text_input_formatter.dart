@@ -279,9 +279,18 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     // final bool isInsertedCharacter =
     //     oldValue.text.length + 1 == newValue.text.length &&
     //         newValue.text.startsWith(oldValue.text);
+    // A replacement can shorten the text by one character without being a
+    // deletion (for example, pasting "0.00" over a selected "10.00").
+    final TextSelection oldSelection = oldValue.selection;
+    final bool isReplacingSelection = oldSelection.isValid &&
+        !oldSelection.isCollapsed &&
+        oldSelection.end <= oldValue.text.length &&
+        newValue.text.length >
+            oldValue.text.length - (oldSelection.end - oldSelection.start);
+    final bool isDeletion = oldValue.text.length - 1 == newValue.text.length &&
+        !isReplacingSelection;
     final bool isRemovedCharacter =
-        oldValue.text.length - 1 == newValue.text.length &&
-        oldValue.text.startsWith(newValue.text);
+        isDeletion && oldValue.text.startsWith(newValue.text);
 
     // Apparently, Flutter has a bug where the framework calls
     // formatEditUpdate twice, or even four times, after a backspace press (see
@@ -297,11 +306,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     //   return oldValue;
     // }
 
-    if (enableNegative) {
-      _isNegative = newValue.text.startsWith('-');
-    } else {
-      _isNegative = false;
-    }
+    final bool isNegative = enableNegative && newValue.text.startsWith('-');
 
     String newText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
 
@@ -314,19 +319,18 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final num value = _parseStrToNum(newText);
-    final num signedValue = _isNegative ? -value : value;
+    final num signedValue = isNegative ? -value : value;
 
     if (_isLessThanMinValue(signedValue) || _isMoreThanMaxValue(signedValue)) {
       return oldValue;
     }
 
+    _isNegative = isNegative;
     _formatter(newText);
 
     // Clear the field when it is emptied, or when deleting a character leaves
     // it at zero (e.g. backspace on "0.01"), but keep "0.00" when it is typed
     // or pasted.
-    final bool isDeletion =
-        oldValue.text.length - 1 == newValue.text.length;
     if (newText.isEmpty || (value == 0 && isDeletion)) {
       return TextEditingValue(
         text: _isNegative ? '-' : '',
@@ -355,8 +359,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     if (cursor < 0 || cursor > newValue.text.length) {
       return _newString.length;
     }
-    int digitsRight =
-        _digit.allMatches(newValue.text.substring(cursor)).length;
+    int digitsRight = _digit.allMatches(newValue.text.substring(cursor)).length;
     if (digitsRight == 0) {
       return _newString.length;
     }

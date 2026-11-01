@@ -200,7 +200,8 @@ void main() {
               symbol: '', maintainCursorPosition: true);
       // insert 9 after the 1 in '123.45' -> '1,923.45', cursor after 9
       final TextEditingValue value = formatter.formatEditUpdate(
-          oldValue.copyWith(selection: const TextSelection.collapsed(offset: 1)),
+          oldValue.copyWith(
+              selection: const TextSelection.collapsed(offset: 1)),
           const TextEditingValue(
               text: '1923.45', selection: TextSelection.collapsed(offset: 2)));
       expect(value.text, '1,923.45');
